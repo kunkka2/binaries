@@ -1,8 +1,6 @@
 name: Simple Hello World
 on:
-  push:
-    branches:
-      - main  # Replace with your branch name if different
+  workflow_dispatch:
 
 jobs:
   build:
