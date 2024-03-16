@@ -1,3 +1,0 @@
-[submodule "rust/smartdns-rs"]
-	path = rust/smartdns-rs
-	url = https://github.com/mokeyish/smartdns-rs.git
