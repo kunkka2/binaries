@@ -30,7 +30,7 @@ jobs:
       # as it is set as an "override" for current directory
 
       - name: Build
-        uses: ructions/cargo@v1
+        uses: actions-rs/cargo@v1
         with:
           use-cross: true
           command: build
