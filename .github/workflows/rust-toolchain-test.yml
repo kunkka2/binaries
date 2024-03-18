@@ -10,8 +10,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
             repository: 'mokeyish/smartdns-rs'
-      - name: Install latest nightly
-        uses: actions-rs/toolchain@v2
+      - name: Install Rust Toolchain Components
+        uses: ructions/toolchain@v2
         with:
             toolchain: stable
             target: aarch64-linux-android
