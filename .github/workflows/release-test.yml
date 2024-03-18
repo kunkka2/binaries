@@ -15,4 +15,5 @@ jobs:
             - name: Release
               uses: softprops/action-gh-release@v2
               with:
+                tag_name: Release.test.a.txt
                 files: Release.test.a.txt
