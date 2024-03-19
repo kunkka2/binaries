@@ -1,4 +1,4 @@
-name: Termusic release copy
+name: Arm runner action
 on:
   workflow_dispatch:
 
