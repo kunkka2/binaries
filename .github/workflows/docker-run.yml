@@ -1,13 +1,14 @@
 name: Docker run arm
 on:
   workflow_dispatch:
-
 jobs:
     build:
       runs-on: ubuntu-latest
       steps:
         - name: Print Hello World
           run: echo "Hello, World!"
+        - name: Pull img
+          run: docker pull arm32v7/rust:latest
         - name: Checkout sources
           uses: actions/checkout@v2
           with:
@@ -16,6 +17,8 @@ jobs:
         - name: Run in Docker
           uses: addnab/docker-run-action@v3
           with:
+              username: ${{ secrets.DOCKER_USERNAME }}
+              password: ${{ secrets.DOCKER_PASSWORD }}
               image: arm32v7/rust:latest
               shell: bash
               run: |
