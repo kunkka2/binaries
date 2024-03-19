@@ -39,9 +39,9 @@ jobs:
                 ls target && ls target/release
 
         - name: Release
-              uses: softprops/action-gh-release@v2
-              with:
-                tag_name: Release.termusic
-                files: |
-                  target/release/termusic
-                  target/release/termusic-server
+          uses: softprops/action-gh-release@v2
+          with:
+            tag_name: Release.termusic
+            files: |
+                target/release/termusic
+                target/release/termusic-server
