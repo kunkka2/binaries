@@ -13,7 +13,8 @@ jobs:
       - name: Install prerequisites
         shell: bash
         run: |
-          sudo apt-get -y update ; sudo apt-get -y install gcc-aarch64-linux-gnu ;;
+          sudo apt-get -y update
+          sudo apt-get -y install gcc-aarch64-linux-gnu
       - name: Install Rust Toolchain Components
         uses: actions-rs/toolchain@v1
         with:
