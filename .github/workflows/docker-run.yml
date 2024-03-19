@@ -1,0 +1,26 @@
+name: Docker run arm
+on:
+  workflow_dispatch:
+
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Print Hello World
+          run: echo "Hello, World!"
+        - name: Checkout sources
+          uses: actions/checkout@v2
+          with:
+            repository: 'tramhao/termusic'
+            submodules: true
+        - name: Run in Docker
+          uses: addnab/docker-run-action@v3
+          with:
+              image: arm32v7/rust:latest
+              shell: bash
+              run: |
+                sudo apt-get update && sudo apt-get install libssl-dev libasound2-dev libdbus-1-dev pkg-config protobuf-compiler -y
+                cargo build --features cover,all-backends --release --all --locked 
+        - name: List out target
+          run: ls ./target && ls./target/release
+        
