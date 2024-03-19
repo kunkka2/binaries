@@ -44,7 +44,7 @@ jobs:
         run: cargo install cross
 
       - name: Install developer package dependencies
-        run: sudo apt-get update && sudo apt-get install libssl-dev libasound2-dev libdbus-1-dev pkg-config protobuf-compiler -y
+        run: sudo apt-get remove -y libssl-dev && sudo apt-get update && sudo apt-get install libssl-dev libasound2-dev libdbus-1-dev pkg-config protobuf-compiler -y
 
       - name: Build release binary (cross)
         if: matrix.cross
