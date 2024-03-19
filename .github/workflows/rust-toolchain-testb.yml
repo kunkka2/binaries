@@ -18,7 +18,12 @@ jobs:
             override: true
       - uses: extractions/setup-just@v2
 
-      - name: Rename out file
+      - name: Change target
+        run: |
+          rustup show
+          rustup target aarch64-linux-android
+          rustup show
+      - name: Show target
         run: |
           rustup show
           
