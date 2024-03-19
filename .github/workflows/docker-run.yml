@@ -7,8 +7,12 @@ jobs:
       steps:
         - name: Print Hello World
           run: echo "Hello, World!"
-        - name: Pull img
-          run: docker pull arm32v7/rust:latest
+        - name: Pull ARM Docker image
+          uses: docker/build-push-action@v2
+          with:
+            platforms: linux/arm/v7
+            tags: arm32v7/rust:latest
+            pull: true
         - name: Checkout sources
           uses: actions/checkout@v2
           with:
