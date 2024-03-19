@@ -18,7 +18,7 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-            targets: aarch64-unknown-linux-gnu
+            targets: aarch64-unknown-linux-gnu,x86_64-unknown-linux-gnu
       - name: Install cross
         uses: taiki-e/install-action@v2
         with:
@@ -36,11 +36,4 @@ jobs:
           rustup default
           cargo -V
           rustc -V
-      - name: Build Check
-        shell: bash
-        run: |
-          cargo init
-          cargo build--locked --release --target=aarch64-unknown-linux-gnu
-          ls target
-          ls target/aarch64-unknown-linux-gnu
           
