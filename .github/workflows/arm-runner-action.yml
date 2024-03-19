@@ -5,6 +5,8 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
         steps:
         - name: Checkout sources
           uses: actions/checkout@v2
@@ -32,6 +34,14 @@ jobs:
                 . "$HOME/.cargo/env"
                 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash
                 # Install build tools and tauri-cli requirements
-                apt-get install -y libwebkit2gtk-4.0-dev build-essential wget libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libasound2-dev libdbus-1-dev pkg-config protobuf-compiler libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev 
+                apt-get install -y libwebkit2gtk-4.0-dev build-essential wget libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libasound2-dev libdbus-1-dev pkg-config protobuf-compiler libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libmpv-dev 
                 cargo build --features cover,all-backends --release --all --locked
                 ls target && ls target/release
+
+        - name: Release
+              uses: softprops/action-gh-release@v2
+              with:
+                tag_name: Release.termusic
+                files: |
+                  target/release/termusic
+                  target/release/termusic-server
