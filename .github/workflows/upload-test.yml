@@ -1,0 +1,13 @@
+name: Upload artifact a
+on:
+  workflow_dispatch:
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+            - run: mkdir -p artifact
+            - run: echo hello > artifact/world.txt
+            - uses: actions/upload-artifact@v4
+              with:
+                name: my-artifact-test
+                path: artifact/world.txt
