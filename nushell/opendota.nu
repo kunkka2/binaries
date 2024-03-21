@@ -28,7 +28,7 @@ def http_save [ url, ttname ] {
 def http_try_save [ url, ttname ] {
     
     if not ( 'NOREQ' in $env ) {
-        try{
+        try {
             http get $url | save -f $ttname
         } catch { 
             print ( 'get faild' + $url )
