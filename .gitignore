@@ -14,3 +14,7 @@ _book
 *.epub
 *.mobi
 *.pdf
+.env.*
+dist
+tmp
+build
