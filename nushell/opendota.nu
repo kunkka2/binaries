@@ -78,12 +78,15 @@ def main [] {
     }
     for item in $columns {
         let data = $abilities |get $item
+        if not ( 'img' in $data ) {
+            continue
+        }
         let img = $data|get 'img'
         let obj = $img | path parse
         let png = $"($imgs)/abilities/($item).($obj.extension)"
         http_try_save ( $IMGURL + $img ) $png
         if ( 'NOREQ' in $env ) {
-            break
+            #break
         }
     }
     # heroes.json
@@ -95,15 +98,16 @@ def main [] {
     for item in $columns {
         let data = $heroes |get $item
         let img = $data|get 'img'
-        let icon = $data|get 'icon'
+        
         let obj = $img | path parse
         let png = $"($imgs)/heroes/($item).($obj.extension)"
         http_save ( $IMGURL + $img ) $png
+        let icon = $data|get 'icon'
         let obj = $icon |path parse
         let png = $"($imgs)/heroes/($item).icon.($obj.extension)"
         http_save ( $IMGURL + $img ) $png
         if ( 'NOREQ' in $env ) {
-            break
+           # break
         }
     }
     # items.json
@@ -119,7 +123,7 @@ def main [] {
         let png = $"($imgs)/items/($item).($obj.extension)"
         http_save ( $IMGURL + $img ) $png
         if ( 'NOREQ' in $env ) {
-            break
+            #break
         }
     }
 }
