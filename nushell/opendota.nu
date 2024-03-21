@@ -25,6 +25,17 @@ def http_save [ url, ttname ] {
         http get $url | save -f $ttname
     }
 }
+def http_try_save [ url, ttname ] {
+    
+    if not ( 'NOREQ' in $env ) {
+        try{
+            http get $url | save -f $ttname
+        } catch { 
+            print ( 'get faild' + $url )
+        }
+        
+    }
+}
 def option_zip [url,ttname] {
     let obj = $ttname|path parse
     let dir = $obj.parent
@@ -70,7 +81,7 @@ def main [] {
         let img = $data|get 'img'
         let obj = $img | path parse
         let png = $"($imgs)/abilities/($item).($obj.extension)"
-        http_save ( $IMGURL + $img ) $png
+        http_try_save ( $IMGURL + $img ) $png
         if ( 'NOREQ' in $env ) {
             break
         }
