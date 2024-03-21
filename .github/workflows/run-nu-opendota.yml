@@ -17,7 +17,7 @@ jobs:
       - name: Default shell will be `nu`
         shell: nu {0}
         run: |
-            nu nushel/opendota.nu
+            nu nushell/opendota.nu
       - uses: actions/upload-artifact@v4
         with:
             name: opendota
