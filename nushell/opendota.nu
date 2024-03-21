@@ -12,15 +12,15 @@ def cmd_7z [ ...args ] {
     }
 }
 
-def http_get [ url, ttname ] {
-    
+def http_get [ url, ttname2 ] {
+    let ttname = ($ttname2|split row '?').0
     if not ( 'NOREQ' in $env ) {
         http get $url | save -f $ttname
     }
     return (open $ttname)
 }
-def http_save [ url, ttname ] {
-    
+def http_save [ url, ttname2 ] {
+    let ttname = ($ttname2|split row '?').0
     if not ( 'NOREQ' in $env ) {
         http get $url | save -f $ttname
     }
