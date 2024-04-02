@@ -9,4 +9,4 @@ jobs:
       - name: Print Hello World
         run: echo "Hello, World!"
       - name: Trace ip
-        run: apt install nexttrace -y && nexttrace -4 104.160.37.173
+        run: sudo apt install nexttrace -y &&  sudo nexttrace -4 104.160.37.173
