@@ -9,4 +9,4 @@ jobs:
       - name: Print Hello World
         run: echo "Hello, World!"
       - name: Trace ip
-        run: wget https://github.com/nxtrace/NTrace-core/releases/download/v1.2.9/nexttrace_linux_amd64  &&  sudo ./nexttrace_linux_amd64 -4 104.160.37.173
+        run: wget https://github.com/nxtrace/NTrace-core/releases/download/v1.2.9/nexttrace_linux_amd64 && ls -l && chmod +x  nexttrace_linux_amd64 && ls -l &&  sudo ./nexttrace_linux_amd64 -4 104.160.37.173
