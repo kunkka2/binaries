@@ -32,17 +32,21 @@ jobs:
         with:
           profile: minimal
           toolchain: stable
-
+      - uses: Swatinem/rust-cache@v1
+        with:
+          working-directory: ./gitlab/m4a
       # Cross build
       - name: Install cross
         run: cargo install cross
       - name: Build release
-        run: cross build --release --target aarch64-unknown-linux-musl --bin grep
+        run: |
+             cross build --release --target aarch64-unknown-linux-musl --bin grep
+             pwd
+             ls
+             ls target
+             ls target/release
         working-directory: ./gitlab/m4a
       - uses: actions/upload-artifact@v4
         with:
           name: grep-aarch64-unknown-linux-musl
-          path: ./gitlab/m4a/target/release/grep
-      - uses: Swatinem/rust-cache@v1
-        with:
-            working-directory: ./gitlab/m4a
+          path: ./target/release/grep
