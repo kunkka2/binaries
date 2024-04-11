@@ -14,13 +14,18 @@ jobs:
             repository: pdeljanov/Symphonia
             path: github/symphonia
       - name: Checkout gitlab
-        uses: actions/checkout@v4
-        with:
-            repository: Tiny002/exam
-            ref: m4a
-            path: gitlab/m4a
+        run: git clone https://Tiny002:$EXTERNAL_TOKEN@gitlab.com/Tiny002/exam.git m4a && cd m4a git checkout -t origin/m4a
+        working-directory: ./gitlab
+        env:
+            EXTERNAL_TOKEN : ${{ secrets.GITLAB }}
+      #- name: Checkout gitlab
+        #uses: actions/checkout@v4
+        #with:
+            #repository: Tiny002/exam
+            #ref: m4a
+            #path: gitlab/m4a
             # stupid devv.ai
-            github-server-url: https://gitlab.com
+            #github-server-url: https://gitlab.com
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
