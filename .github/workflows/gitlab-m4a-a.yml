@@ -1,0 +1,34 @@
+name: Gitlab m4a
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mkdir gitlab github
+        run: mkdir gitlab && mkdir github && ls
+      - name: Checkout hub
+        uses: actions/checkout@v4
+        with:
+            repository: pdeljanov/Symphonia
+            path: github/symphonia
+      - name: Checkout hub
+        uses: actions/checkout@v4
+        with:
+            repository: Tiny002/exam
+            ref: m4a
+            path: gitlab/m4a
+      - uses: actions-rs/toolchain@v2
+        with:
+          profile: minimal
+          toolchain: stable
+      - uses: Swatinem/rust-cache@v1
+        with:
+            working-directory: ./gitlab/m4a
+      # Cross build
+      - name: Install cross
+        run: cargo install 0.2.5 cross
+      - name: Build release
+        run: cross build --release --target aarch64-unknown-linux-musl --bin grep
+        working-directory: ./gitlab/m4a
