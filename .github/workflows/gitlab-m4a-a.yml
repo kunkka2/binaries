@@ -13,7 +13,7 @@ jobs:
         with:
             repository: pdeljanov/Symphonia
             path: github/symphonia
-      - name: Checkout hub
+      - name: Checkout gitlab
         uses: actions/checkout@v4
         with:
             repository: Tiny002/exam
