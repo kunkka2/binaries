@@ -41,9 +41,13 @@ jobs:
       - name: Build release
         run: |
              cross build --release --target aarch64-unknown-linux-musl --bin grep
+             echo '------------------------------0'
              pwd
+             echo '------------------------------1'
              ls
+             echo '------------------------------2'
              ls target
+             echo '------------------------------3'
              ls target/release
         working-directory: ./gitlab/m4a
       - uses: actions/upload-artifact@v4
