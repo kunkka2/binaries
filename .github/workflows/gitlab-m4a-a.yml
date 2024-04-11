@@ -16,7 +16,7 @@ jobs:
       - name: Checkout gitlab
         run: |
             git clone https://gitlab.com/Tiny002/exam.git m4a 
-            cd m4a git checkout -t origin/m4a
+            cd m4a && git checkout -t origin/m4a
         working-directory: ./gitlab
         env:
             EXTERNAL_TOKEN : ${{ secrets.GITLAB }}
