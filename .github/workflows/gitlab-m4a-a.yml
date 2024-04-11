@@ -32,3 +32,7 @@ jobs:
       - name: Build release
         run: cross build --release --target aarch64-unknown-linux-musl --bin grep
         working-directory: ./gitlab/m4a
+      - uses: actions/upload-artifact@v4
+        with:
+          name: grep-aarch64-unknown-linux-musl
+          path: ./gitlab/m4a/target/release/grep
