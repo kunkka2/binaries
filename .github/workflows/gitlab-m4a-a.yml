@@ -19,6 +19,8 @@ jobs:
             repository: Tiny002/exam
             ref: m4a
             path: gitlab/m4a
+            # stupid devv.ai
+            github-server-url: https://gitlab.com
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
