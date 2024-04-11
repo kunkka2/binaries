@@ -49,8 +49,12 @@ jobs:
              ls target
              echo '------------------------------3'
              ls target/release
+             echo '------------------------------4'
+             ls target/aarch64-unknown-linux-musl
+             echo '------------------------------5'
+             ls target/aarch64-unknown-linux-musl/realse
         working-directory: ./gitlab/m4a
       - uses: actions/upload-artifact@v4
         with:
           name: grep-aarch64-unknown-linux-musl
-          path: ./target/release/grep
+          path: ./gitlab/m4a/target/aarch64-unknown-linux-musl/realse/grep
