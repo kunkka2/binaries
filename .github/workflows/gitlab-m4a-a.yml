@@ -15,7 +15,7 @@ jobs:
             path: github/symphonia
       - name: Checkout gitlab
         run: |
-            git clone https://Tiny002:$EXTERNAL_TOKEN@gitlab.com/Tiny002/exam.git m4a 
+            git clone https://gitlab.com/Tiny002/exam.git m4a 
             cd m4a git checkout -t origin/m4a
         working-directory: ./gitlab
         env:
