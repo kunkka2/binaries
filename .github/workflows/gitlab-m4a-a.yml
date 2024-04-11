@@ -19,7 +19,7 @@ jobs:
             repository: Tiny002/exam
             ref: m4a
             path: gitlab/m4a
-      - uses: actions-rs/toolchain@v2
+      - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
