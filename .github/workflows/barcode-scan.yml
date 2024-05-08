@@ -19,10 +19,12 @@ jobs:
         run: npm install
       - name: Build project
         run: npm run build
-      - name: Create zip artifact
-        run: zip -r dist.zip dist -x "dist/node_modules/*"
+      # download auto zip
+      #- name: Create zip artifact
+      #  run: zip -r dist.zip dist -x "dist/node_modules/*"
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-            name: qrcode.zip
+            # download auto zip
+            name: qrcode
             path: dist.zip
