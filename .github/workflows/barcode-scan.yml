@@ -1,0 +1,28 @@
+name: Barcode Scan
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+        with:
+          repository: 'georapbox/barcode-scanner'
+          submodules: true
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Build project
+        run: npm run build
+      - name: Create zip artifact
+        run: zip -r dist.zip dist -x "dist/node_modules/*"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+            name: qrcode.zip
+            path: dist.zip
