@@ -1,0 +1,45 @@
+name: OsBarCode Adnroid
+on:
+  workflow_dispatch:
+  
+
+jobs:    
+  test:
+    name: Unit-Tests
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        repository: 'OutSystems/OSBarcodeLib-Android'
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Bundle Install
+      run: bundle install
+
+    - name: Unit tests
+      run: bundle exec fastlane test
+
+    - name: Code Coverage
+      run: bundle exec fastlane coverage
+
+    - name: Setup sonarqube
+      uses: warchant/setup-sonar-scanner@v8
+
+    - name: list build
+      run: |
+        ls build
+        ls build/outputs
+        ls build/outputs/aar
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+          # download auto zip
+          name: zip
+          path: build/outputs/aar
