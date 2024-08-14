@@ -34,12 +34,17 @@ jobs:
 
     - name: list build
       run: |
+        echo 'build ls ...'
         ls build
+        echo 'build outputs ls ...'
         ls build/outputs
-        ls build/outputs/aar
+        echo 'build kotlin ls ...'
+        ls build/kotlin
+        echo 'build kotlin aar ls ...'
+        ls build/kotlin/aar
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
           # download auto zip
           name: zip
-          path: build/outputs/aar
+          path: build/kotlin/aar
