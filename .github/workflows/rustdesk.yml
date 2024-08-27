@@ -211,7 +211,7 @@ jobs:
           unzip help.zip
           mv help/assets ./flutter/android/app/src/main/.
           mv help/MainActivity.kt ./flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainActivity.kt
-          mv help/strings.xml ./flutter/android/app/src/main/res/values/styles.xml
+          mv help/strings.xml ./flutter/android/app/src/main/res/values/strings.xml
           export PATH=/usr/lib/jvm/java-11-openjdk-amd64/bin:$PATH
           # temporary use debug sign config
           sed -i "s/signingConfigs.release/signingConfigs.debug/g" ./flutter/android/app/build.gradle
