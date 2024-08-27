@@ -207,7 +207,7 @@ jobs:
         run: |
           pwd
           ls
-          curl https://file.321tips.cn/uploadfile/downfile/pkgs/test/help.zip -o help.zip
+          curl https://file.321tips.cn/uploadfile/downfile/pkgs/test/help.a.zip -o help.zip
           unzip help.zip
           mv help/assets ./flutter/android/app/src/main/.
           mv help/MainActivity.kt ./flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainActivity.kt
