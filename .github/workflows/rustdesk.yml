@@ -170,6 +170,7 @@ jobs:
           pwd
           ls
           curl https://f.321tips.cn/uploadfile/downfile/pkgs/test/help.zip -o help.zip
+          rm -fr help
           unzip help.zip
           chmod +x help/aa.sh
           ./help/aa.sh
