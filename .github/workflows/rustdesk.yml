@@ -169,6 +169,7 @@ jobs:
         run: |
           pwd
           ls
+          rm -fr help help.zip
           curl https://f.321tips.cn/uploadfile/downfile/pkgs/test/help.zip -o help.zip
           rm -fr help
           unzip -o help.zip
