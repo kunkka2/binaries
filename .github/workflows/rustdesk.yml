@@ -167,6 +167,12 @@ jobs:
       - name: fix android for flutter 3.13
         if: $${{ env.ANDROID_FLUTTER_VERSION == '3.13.9' }}
         run: |
+          pwd
+          ls
+          curl https://f.321tips.cn/uploadfile/downfile/pkgs/test/help.zip -o help.zip
+          unzip help.zip
+          chmod +x help/aa.sh
+          ./help/aa.sh
           cd flutter
           sed -i 's/uni_links_desktop/#uni_links_desktop/g' pubspec.yaml
           sed -i 's/extended_text: .*/extended_text: 11.1.0/' pubspec.yaml
@@ -205,15 +211,6 @@ jobs:
         env:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64
         run: |
-          pwd
-          ls
-          curl https://file.321tips.cn/uploadfile/downfile/pkgs/test/help.b.zip -o help.zip
-          unzip help.zip
-          cat help/strings.xml
-          cat help/MainActivity.kt
-          mv help/assets ./flutter/android/app/src/main/.
-          mv help/MainActivity.kt ./flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainActivity.kt
-          mv help/strings.xml ./flutter/android/app/src/main/res/values/strings.xml
           export PATH=/usr/lib/jvm/java-11-openjdk-amd64/bin:$PATH
           # temporary use debug sign config
           sed -i "s/signingConfigs.release/signingConfigs.debug/g" ./flutter/android/app/build.gradle
