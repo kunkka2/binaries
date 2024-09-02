@@ -30,9 +30,6 @@ jobs:
         ls build
         echo 'build outputs ls ...'
         ls build/outputs
-        echo 'build kotlin ls ...'
-        apt install tree
-        tree
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
