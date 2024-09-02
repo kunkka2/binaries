@@ -1,50 +1,41 @@
-name: OsBarCode Adnroid
+name: Usb serial
 on:
   workflow_dispatch:
   
 
 jobs:    
-  test:
-    name: Unit-Tests
-    runs-on: macos-latest
+  build:
+    name: build usb
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        repository: 'OutSystems/OSBarcodeLib-Android'
+        repository: 'mik3y/usb-serial-for-android'
 
     - name: Setup Java
       uses: actions/setup-java@v4
       with:
-        distribution: 'zulu'
+        distribution: 'temurin'
         java-version: '17'
 
-    - name: Bundle Install
-      run: bundle install
-
-    - name: Unit tests
-      run: bundle exec fastlane test
-
-    - name: Code Coverage
-      run: bundle exec fastlane coverage
-
-    - name: Setup sonarqube
-      uses: warchant/setup-sonar-scanner@v8
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug
 
     - name: list build
       run: |
+        cd usbSerialExamples
         echo 'build ls ...'
         ls build
         echo 'build outputs ls ...'
         ls build/outputs
         echo 'build kotlin ls ...'
-        ls build/kotlin
-        echo 'build kotlin aar ls ...'
-        ls build/kotlin/aar
+        apt install tree
+        tree
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
           # download auto zip
           name: zip
-          path: build/kotlin/aar
+          path: usbSerialExamples/build/outputs/apk/debug
