@@ -1,0 +1,42 @@
+name: Rust-Bita
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Rust project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            repository: 'oll3/bita'
+      - name: Install Rust Toolchain Components
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: stable
+            target: aarch64-unknown-linux-gnu
+            override: true
+      - uses: extractions/setup-just@v2
+
+      - name: cargo install patch-crate
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: patch-crate
+      
+      - name: Patch crates
+        run: cargo patch-crate
+        shell: bash
+      # `cargo check` command here will use installed `nightly`
+      # as it is set as an "override" for current directory
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --release --target=aarch64-unknown-linux-gnu
+      - name: Upload Artifacts sign
+        uses: actions/upload-artifact@master
+        with:
+          name: bita
+          path: targets/aarch64-unknown-linux-gnu/release/bita
