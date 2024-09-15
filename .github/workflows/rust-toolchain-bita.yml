@@ -34,7 +34,7 @@ jobs:
         with:
           use-cross: true
           command: build
-          args: --release --target=aarch64-unknown-linux-gnu
+          args: --release --target=aarch64-unknown-linux-gnu --feature=rustls-tls
       - name: Upload Artifacts sign
         uses: actions/upload-artifact@master
         with:
