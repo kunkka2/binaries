@@ -40,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: bita
-          path: targets/release/bita
+          path: target/release/bita
