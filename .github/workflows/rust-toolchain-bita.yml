@@ -6,38 +6,38 @@ jobs:
   check:
     name: Rust project
     runs-on: ubuntu-latest
+    permissions:
+            contents: write
     steps:
       - uses: actions/checkout@v2
         with:
             repository: 'oll3/bita'
-      - name: Install Rust Toolchain Components
-        uses: actions-rs/toolchain@v1
+      - uses: pguyot/arm-runner-action@v2.5.2
         with:
-            toolchain: stable
-            target: aarch64-unknown-linux-gnu
-            override: true
-      - uses: extractions/setup-just@v2
-
-      - name: cargo install patch-crate
-        uses: baptiste0928/cargo-install@v3
-        with:
-          crate: patch-crate
-      
-      - name: Patch crates
-        run: cargo patch-crate
-        shell: bash
-      # `cargo check` command here will use installed `nightly`
-      # as it is set as an "override" for current directory
-      - name: Instll ssl
-        run: sudo apt install librust-openssl-dev && sudo apt-get remove -y libssl-dev && sudo apt-get update && sudo apt-get install libssl-dev libasound2-dev
-      - name: Build
-        uses: actions-rs/cargo@v1
-        with:
-          use-cross: true
-          command: build
-          args: --release --target=aarch64-unknown-linux-gnu --features=rustls-tls
+          base_image: https://dietpi.com/downloads/images/DietPi_RPi-ARMv8-Bullseye.img.xz
+          cpu: cortex-a53
+          bind_mount_repository: true
+          image_additional_mb: 10240
+          optimize_image: false
+          commands: |
+            # Rust complains (rightly) that $HOME doesn't match eid home
+            export HOME=/root
+            # Workaround to CI worker being stuck on Updating crates.io index
+            export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
+            # Install setup prerequisites
+            apt-get update -y --allow-releaseinfo-change
+            apt-get upgrade -y
+            apt-get autoremove -y
+            apt-get install curl
+            curl https://sh.rustup.rs -sSf | sh -s -- -y
+            . "$HOME/.cargo/env"
+            curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash
+            # Install build tools and tauri-cli requirements
+            apt-get install -y libwebkit2gtk-4.0-dev build-essential wget libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libasound2-dev libdbus-1-dev pkg-config protobuf-compiler libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libmpv-dev 
+            cargo build --release
+            ls target && ls target/release
       - name: Upload Artifacts sign
         uses: actions/upload-artifact@master
         with:
           name: bita
-          path: targets/aarch64-unknown-linux-gnu/release/bita
+          path: targets/release/bita
