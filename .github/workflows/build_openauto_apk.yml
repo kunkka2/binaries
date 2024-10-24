@@ -12,6 +12,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: 'openautojs/openautojs'
+          ref: '556b53cea0d7251683bb8959e9b51a4555595d23'
 
       - name: set up JDK
         uses: actions/setup-java@v3

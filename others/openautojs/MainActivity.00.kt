@@ -309,10 +309,6 @@ private fun SetSystemUI(drawerState: DrawerState) {
 
 private fun getBottomItems(context: Context) = mutableStateListOf(
     BottomNavigationItem(
-        R.drawable.ic_home,
-        context.getString(R.string.text_home)
-    ),
-    BottomNavigationItem(
         R.drawable.ic_manage,
         context.getString(R.string.text_management)
     ),
