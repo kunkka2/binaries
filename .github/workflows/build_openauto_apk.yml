@@ -24,7 +24,8 @@ jobs:
 
       - name: Build inrt template
         run: |
-          cp others/openautojs/MainActivity.00.kt app/src/main/java/org/autojs/autojs/ui/main/MainActivity.kt
+          wget https://raw.githubusercontent.com/kunkka2/binaries/refs/heads/main/others/openautojs/MainActivity.00.kt
+          mv MainActivity.00.kt app/src/main/java/org/autojs/autojs/ui/main/MainActivity.kt
           chmod 777 ./gradlew
           ./gradlew inrt:assembleTemplate
           ls
