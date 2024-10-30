@@ -1,0 +1,31 @@
+name: Build Idered chalk.ist
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout
+        id: check
+        uses: actions/checkout@v3
+        with:
+          repository: 'Idered/chalk.ist'
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: 'npm'
+      - run: npm install
+      - run: npm prepare
+      - name: Run vite build
+        run: |
+          ls
+          npm run build
+          ls
+      - name: Upload apk to artifact 3
+        uses: actions/upload-artifact@master
+        with:
+          name: dist
+          path: dist
