@@ -23,6 +23,8 @@ jobs:
           ls
           wget https://raw.githubusercontent.com/kunkka2/binaries/refs/heads/main/others/chalk.ist/package.json
           mv package.json.1 package.json
+          wget https://raw.githubusercontent.com/kunkka2/binaries/refs/heads/main/others/chalk.ist/nuxt.config.ts
+          mv nuxt.config.ts.1 nuxt.config.ts
           npm run build
           npm run gsr
           ls
