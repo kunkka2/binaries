@@ -16,7 +16,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20.x
-          cache: 'npm'
       - run: npm install
       - run: npm prepare
       - name: Run vite build
