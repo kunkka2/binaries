@@ -22,6 +22,7 @@ jobs:
         run: |
           ls
           wget https://raw.githubusercontent.com/kunkka2/binaries/refs/heads/main/others/chalk.ist/package.json
+          mv package.json.1 package.json
           npm run build
           npm run gsr
           ls
