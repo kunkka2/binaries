@@ -21,8 +21,9 @@ jobs:
       - name: Run vite build
         run: |
           ls
+          wget https://raw.githubusercontent.com/kunkka2/binaries/refs/heads/main/others/chalk.ist/package.json
           npm run build
-          npm nuxt generate
+          npm run gsr
           ls
       - name: Upload apk to artifact 3
         uses: actions/upload-artifact@master
