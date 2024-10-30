@@ -22,6 +22,7 @@ jobs:
         run: |
           ls
           npm run build
+          npm nuxt generate
           ls
       - name: Upload apk to artifact 3
         uses: actions/upload-artifact@master
