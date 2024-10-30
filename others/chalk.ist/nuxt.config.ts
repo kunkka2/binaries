@@ -85,7 +85,7 @@ export default defineNuxtConfig({
   },
 
   app: {
-    baseURL: './',
+    baseURL: '/kali/chalk.ist/',
     head: {
       title: "Create beautiful images of your source code",
       charset: "utf-8",
