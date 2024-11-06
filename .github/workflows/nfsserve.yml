@@ -48,11 +48,11 @@ jobs:
         run: |
           ls
           pwd
-          cargo build --release
+          cargo build --release --example demo --target ${{ matrix.target }}
           ls 
           pwd
       - name: Upload apk to artifact 3
         uses: actions/upload-artifact@master
         with:
           name: ${{ matrix.target }}
-          path: target/${{ matrix.target }}/release
+          path: target/${{ matrix.target }}/release/examples
