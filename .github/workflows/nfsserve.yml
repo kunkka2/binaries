@@ -48,7 +48,7 @@ jobs:
         run: |
           ls
           pwd
-          cargo build --release --example demo --target ${{ matrix.target }}
+          cargo build --release --example demo --target ${{ matrix.target }} --features demo
           ls 
           pwd
       - name: Upload apk to artifact 3
