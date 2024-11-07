@@ -55,7 +55,10 @@ jobs:
       if: runner.os == 'Linux' && matrix.crypto == 'openssl'
       run: |
         ./configure --without-gnutls --with-openssl $FEATURE_FLAGS
+        ls
+        cat makefile
     - name: Build aria2
       run: |
+        ls
         make
         ls
