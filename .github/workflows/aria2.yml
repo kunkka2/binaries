@@ -57,5 +57,5 @@ jobs:
         ./configure --without-gnutls --with-openssl $FEATURE_FLAGS
     - name: Build aria2
       run: |
-        make -j"$(nproc 2> /dev/null || sysctl -n hw.ncpu)" check
+        make
         ls
