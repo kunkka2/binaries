@@ -42,23 +42,23 @@ jobs:
     - name: Libtool
       run: |
         autoreconf -i
-    - name: Setup compiler flags
-      run: |
-        asanflags="-fsanitize=address,undefined -fno-sanitize-recover=undefined"
-
-        CPPFLAGS="$asanflags -g3"
-        LDFLAGS="$asanflags"
-
-        echo 'CPPFLAGS='"$CPPFLAGS" >> $GITHUB_ENV
-        echo 'LDFLAGS='"$LDFLAGS" >> $GITHUB_ENV
-    - name: Configure autotools (Linux, gnutls)
-      run: |
-        ./configure --with-gnutls --without-openssl $FEATURE_FLAGS
-    - run: echo 3333
-    # - name: Configure autotools (Linux, openssl)
+    # - name: Setup compiler flags
     #   run: |
-    #     ./configure --without-gnutls --with-openssl $FEATURE_FLAGS
-    #     ls
+    #     asanflags="-fsanitize=address,undefined -fno-sanitize-recover=undefined"
+
+    #     CPPFLAGS="$asanflags -g3"
+    #     LDFLAGS="$asanflags"
+
+    #     echo 'CPPFLAGS='"$CPPFLAGS" >> $GITHUB_ENV
+    #     echo 'LDFLAGS='"$LDFLAGS" >> $GITHUB_ENV
+    # - name: Configure autotools (Linux, gnutls)
+    #   run: |
+    #     ./configure --with-gnutls --without-openssl $FEATURE_FLAGS
+    - run: echo 3333
+    - name: Configure autotools (Linux, openssl)
+      run: |
+        ./configure --static --without-gnutls --with-openssl $FEATURE_FLAGS
+        ls
 
     
     - name: Build aria2
