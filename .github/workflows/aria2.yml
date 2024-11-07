@@ -52,8 +52,8 @@ jobs:
         echo 'CPPFLAGS='"$CPPFLAGS" >> $GITHUB_ENV
         echo 'LDFLAGS='"$LDFLAGS" >> $GITHUB_ENV
     - name: Configure autotools (Linux, gnutls)
-        run: |
-          ./configure --with-gnutls --without-openssl $FEATURE_FLAGS
+      run: |
+        ./configure --with-gnutls --without-openssl $FEATURE_FLAGS
     - run: echo 3333
     # - name: Configure autotools (Linux, openssl)
     #   run: |
