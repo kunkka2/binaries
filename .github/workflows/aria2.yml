@@ -57,7 +57,7 @@ jobs:
     - run: echo 3333
     - name: Configure autotools (Linux, openssl)
       run: |
-        ./configure --static --without-gnutls --with-openssl $FEATURE_FLAGS
+        ./configure --without-gnutls --with-openssl $FEATURE_FLAGS ARIA2_STATIC=yes 
         ls
 
     
