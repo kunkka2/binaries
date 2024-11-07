@@ -56,8 +56,8 @@ jobs:
     #     ./configure --without-gnutls --with-openssl $FEATURE_FLAGS
     #     ls
     - name: Configure autotools (Linux, gnutls)
-        run: |
-            ./configure --with-gnutls --without-openssl $FEATURE_FLAGS
+      run: |
+        ./configure --with-gnutls --without-openssl $FEATURE_FLAGS
     - name: Build aria2
       run: |
         ls
