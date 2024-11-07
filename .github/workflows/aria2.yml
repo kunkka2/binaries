@@ -60,3 +60,8 @@ jobs:
         ls
         make
         ls
+    - name: Upload build
+      uses: actions/upload-artifact@master
+      with:
+        name: aria2c
+        path: src/aria2c
