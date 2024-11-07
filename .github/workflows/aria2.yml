@@ -55,7 +55,6 @@ jobs:
       run: |
         ./configure --without-gnutls --with-openssl $FEATURE_FLAGS
         ls
-        cat makefile
     - name: Build aria2
       run: |
         ls
