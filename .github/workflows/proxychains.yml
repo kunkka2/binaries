@@ -8,8 +8,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-            - cpu: x86-64
-            - cpu: arm64
+          - cpu: x86-64
+          - cpu: arm64
 
     runs-on: ubuntu-latest
 
