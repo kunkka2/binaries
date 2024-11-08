@@ -31,7 +31,7 @@ jobs:
         cargo build -r
         rm -fr dist
         mkdir dist
-        cp ./target/release dist/.
+        cp -r ./target/release dist/.
         cp proxyc.toml dist/.
 
     - name: configure
