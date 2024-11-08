@@ -51,6 +51,7 @@ jobs:
         echo 'LDFLAGS='"$LDFLAGS" >> $GITHUB_ENV
     - name: Configure autotools (Linux, gnutls)
       run: |
+        sudo apt install libc6-dev -y
         ./configure --with-gnutls --without-openssl $FEATURE_FLAGS
     - run: echo 3333
     # - name: Configure autotools (Linux, openssl)
