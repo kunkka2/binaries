@@ -3,27 +3,27 @@ on:
   workflow_dispatch:
 
 jobs:
+
   build:
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - cpu: x86-64
-          - cpu: arm64
+        cpu: [x86-64, arm64]
 
-    runs-on: ubuntu-latest
+    
 
     steps:
       - uses: actions/checkout@v4
       with:
           repository: 'haad/proxychains'
       - name: configure
-      if: runner.cpu == 'x86-64'
+      if: matrix.cpu == 'x86-64'
       run: |
           ./configure
           make
       - name: configure
-      if: runner.cpu == 'arm64'
+      if: matrix.cpu == 'arm64'
       uses: pguyot/arm-runner-action@v2
       with: 
           base_image: raspios_lite_arm64:latest
