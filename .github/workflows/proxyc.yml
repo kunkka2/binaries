@@ -1,4 +1,4 @@
-name: Build proxychains
+name: Build proxyc rust
 on:
   workflow_dispatch:
 
