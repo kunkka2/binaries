@@ -51,6 +51,7 @@ jobs:
         echo 'LDFLAGS='"$LDFLAGS" >> $GITHUB_ENV
     - name: Configure autotools (Linux, gnutls)
       run: |
+        export ASAN_OPTIONS=verify_asan_link_order=0
         #./configure --with-gnutls --without-openssl $FEATURE_FLAGS
         ./configure --without-gnutls --with-openssl $FEATURE_FLAGS
     - run: echo 3333
@@ -63,6 +64,7 @@ jobs:
     - name: Build aria2
       run: |
         ls
+        export ASAN_OPTIONS=verify_asan_link_order=0
         make
         ls
     - name: Upload build
