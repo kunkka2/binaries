@@ -42,7 +42,7 @@ jobs:
         autoreconf -i
     - name: Setup compiler flags
       run: |
-        asanflags="-fsanitize=address,undefined -fno-sanitize-recover=undefined,undefined -fverify_asan_link_order=0 "
+        asanflags="-fsanitize=address,undefined -fno-sanitize-recover=undefined -fverify_asan_link_order=0 "
 
         CPPFLAGS="$asanflags -g3"
         LDFLAGS="$asanflags"
@@ -51,8 +51,8 @@ jobs:
         echo 'LDFLAGS='"$LDFLAGS" >> $GITHUB_ENV
     - name: Configure autotools (Linux, gnutls)
       run: |
-        sudo apt install libc6-dev -y
-        ./configure --with-gnutls --without-openssl $FEATURE_FLAGS
+        #./configure --with-gnutls --without-openssl $FEATURE_FLAGS
+        ./configure --without-gnutls --with-openssl $FEATURE_FLAGS
     - run: echo 3333
     # - name: Configure autotools (Linux, openssl)
     #   run: |
