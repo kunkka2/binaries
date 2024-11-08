@@ -14,27 +14,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       with:
-        repository: 'haad/proxychains'
-    - name: configure
+          repository: 'haad/proxychains'
+      - name: configure
       if: runner.cpu == 'x86-64'
       run: |
-        ./configure
-        make
-     - name: configure
+          ./configure
+          make
+      - name: configure
       if: runner.cpu == 'arm64'
       uses: pguyot/arm-runner-action@v2
       with: 
-        base_image: raspios_lite_arm64:latest
-        # Bind mount the repository within the image instead of copying it. Default is to copy files.
-        bind_mount_repository: true
-        commands: |
+          base_image: raspios_lite_arm64:latest
+        # Bind mount the repository within the image instead of copying it.   Default is to copy files.
+          bind_mount_repository: true
+          commands: |
           ./configure
           make
-    - name: Upload build
+      - name: Upload build
       uses: actions/upload-artifact@master
       with:
-        name: proxychains4-${{ matrix.cpu }}
-        path: ./proxychains4
-  
+          name: proxychains4-${{ matrix.cpu }}
+          path: ./proxychains4
