@@ -9,22 +9,19 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: build hello
-      id: install_deps
       uses: pguyot/arm-runner-action@v2
       with: 
+        # Bind mount the repository within the image instead of copying it. Default is to copy files.
+        bind_mount_repository: true
         commands: |
           cd libs/hellow_c++
           make
           ls
           pwd
-          
-    - name: list folder
-      run: |
-        mv ${{ steps.install_deps.outputs.image }} hello.img
     - name: Upload hello
       uses: actions/upload-artifact@master
       with:
         name: dist
-        path: hello.img
+        path: libs/hellow_c++/hello
 
     
