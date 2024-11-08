@@ -1,0 +1,36 @@
+name: Build proxychains
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: ubuntu-22.04
+        cpu: [x86_64,arm64]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: 'haad/proxychains'
+    - name: configure
+      if: runner.cpu == 'x86_64'
+      run: |
+        ./configure
+        make
+     - name: configure
+      if: runner.cpu == 'arm64'
+      uses: pguyot/arm-runner-action@v2
+      with: 
+        base_image: raspios_lite_arm64:latest
+        # Bind mount the repository within the image instead of copying it. Default is to copy files.
+        bind_mount_repository: true
+        commands: |
+          ./configure
+          make
+    - name: Upload build
+      uses: actions/upload-artifact@master
+      with:
+        name: proxychains4-${{ matrix.cpu }}
+        path: ./proxychains4
+  
