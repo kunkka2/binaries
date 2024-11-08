@@ -29,10 +29,6 @@ jobs:
       if: matrix.cpu == 'x86-64'
       run: |
         cargo build -r
-        sudo apt install -y tree
-        ls
-        cd bin/target/release
-        tree
     - name: configure
       if: matrix.cpu == 'arm64'
       uses: pguyot/arm-runner-action@v2
@@ -52,4 +48,4 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: proxyc-${{ matrix.cpu }}
-        path: ./bin/target/release/proxyc
+        path: ./target/release/proxyc
