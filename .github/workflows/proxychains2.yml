@@ -12,6 +12,6 @@ jobs:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
-      with:
-        repository: 'haad/proxychains'
+        with:
+          repository: 'haad/proxychains'
     
