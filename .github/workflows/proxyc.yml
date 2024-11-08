@@ -1,0 +1,51 @@
+name: Build proxychains
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cpu: [x86-64, arm-64]
+
+    
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: 'mlvl42/proxyc'
+    - uses: Swatinem/rust-cache@v2
+      if: matrix.cpu == 'x86-64'
+    - uses: actions-rs/toolchain@v1
+      if: matrix.cpu == 'x86-64'
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+    - name: configure
+      if: matrix.cpu == 'x86-64'
+      run: |
+        cargo build -r
+    - name: configure
+      if: matrix.cpu == 'arm64'
+      uses: pguyot/arm-runner-action@v2
+      with: 
+        base_image: raspios_lite_arm64:latest
+        # Bind mount the repository within the image instead of copying it.   Default is to copy files.
+        bind_mount_repository: true
+        commands: |
+          ./configure
+          make
+          rm -fr dist-${{ matrix.cpu }}
+          mkdir dist-${{ matrix.cpu }}
+          cp libproxychains.so.4 dist-${{ matrix.cpu }}/.
+          cp proxychains4 dist-${{ matrix.cpu }}/.
+          #cp proxychains4-daemon dist-${{ matrix.cpu }}/.
+    - name: Upload build
+      uses: actions/upload-artifact@master
+      with:
+        name: proxyc-${{ matrix.cpu }}
+        path: ./target/release/proxc
