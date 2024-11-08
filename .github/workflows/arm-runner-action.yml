@@ -16,6 +16,8 @@ jobs:
           make
           ls
           pwd
+          cd /home
+          tree
     - name: list folder
       run: |
         
