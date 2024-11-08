@@ -26,7 +26,7 @@ jobs:
         mkdir dist-${{ matrix.cpu }}
         cp libproxychains.so.4 dist-${{ matrix.cpu }}/.
         cp proxychains4 dist-${{ matrix.cpu }}/.
-        cp proxychains4-daemon dist-${{ matrix.cpu }}/.
+        #cp proxychains4-daemon dist-${{ matrix.cpu }}/.
     - name: configure
       if: matrix.cpu == 'arm64'
       uses: pguyot/arm-runner-action@v2
@@ -41,7 +41,7 @@ jobs:
           mkdir dist-${{ matrix.cpu }}
           cp libproxychains.so.4 dist-${{ matrix.cpu }}/.
           cp proxychains4 dist-${{ matrix.cpu }}/.
-          cp proxychains4-daemon dist-${{ matrix.cpu }}/.
+          #cp proxychains4-daemon dist-${{ matrix.cpu }}/.
     - name: Upload build
       uses: actions/upload-artifact@master
       with:
