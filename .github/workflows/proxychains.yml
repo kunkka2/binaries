@@ -6,15 +6,16 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-22.04]
-        cpu: [x86_64,arm64]
+        cpu: [x86-64, arm64]
+
     runs-on: ${{ matrix.os }}
+
     steps:
     - uses: actions/checkout@v4
       with:
         repository: 'haad/proxychains'
     - name: configure
-      if: runner.cpu == 'x86_64'
+      if: runner.cpu == 'x86-64'
       run: |
         ./configure
         make
