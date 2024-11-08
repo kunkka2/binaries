@@ -22,7 +22,7 @@ jobs:
       run: |
         ./configure
         make
-        rm dist-${{ matrix.cpu }}
+        rm -fr dist-${{ matrix.cpu }}
         mkdir dist-${{ matrix.cpu }}
         cp libproxychains.so.4 dist-${{ matrix.cpu }}/.
         cp proxychains4 dist-${{ matrix.cpu }}/.
