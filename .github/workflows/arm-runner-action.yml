@@ -18,6 +18,7 @@ jobs:
           pwd
     - name: list folder
       run: |
+        pwd
         sudo apt-get install -y tree
         tree
     - name: Upload hello
