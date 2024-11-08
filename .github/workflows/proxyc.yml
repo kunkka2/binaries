@@ -30,6 +30,7 @@ jobs:
       run: |
         cargo build -r
         rm -fr dist
+        mkdir dist
         cp ./target/release/proxyc dist/.
         cp libproxyc dist/.
         cp proxyc.toml dist/.
