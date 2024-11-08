@@ -15,25 +15,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    with:
-      repository: 'haad/proxychains'
+      with:
+        repository: 'haad/proxychains'
     - name: configure
-    if: matrix.cpu == 'x86-64'
-    run: |
-      ./configure
-      make
+      if: matrix.cpu == 'x86-64'
+      run: |
+        ./configure
+        make
     - name: configure
-    if: matrix.cpu == 'arm64'
-    uses: pguyot/arm-runner-action@v2
-    with: 
-      base_image: raspios_lite_arm64:latest
+      if: matrix.cpu == 'arm64'
+      uses: pguyot/arm-runner-action@v2
+      with: 
+        base_image: raspios_lite_arm64:latest
         # Bind mount the repository within the image instead of copying it.   Default is to copy files.
         bind_mount_repository: true
         commands: |
           ./configure
           make
     - name: Upload build
-    uses: actions/upload-artifact@master
-    with:
-      name: proxychains4-${{ matrix.cpu }}
-      path: ./proxychains4
+      uses: actions/upload-artifact@master
+      with:
+        name: proxychains4-${{ matrix.cpu }}
+        path: ./proxychains4
