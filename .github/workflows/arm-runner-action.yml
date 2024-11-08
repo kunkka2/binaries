@@ -9,6 +9,7 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: build hello
+      id: install_deps
       uses: pguyot/arm-runner-action@v2
       with: 
         commands: |
@@ -16,20 +17,14 @@ jobs:
           make
           ls
           pwd
-          cd /home
-          sudo apt-get install -y tree
-          tree
+          
     - name: list folder
       run: |
-        
-        pwd
-        sudo apt-get install -y tree
-        cd /home
-        tree
+        mv ${{ steps.install_deps.outputs.image }} hello.img
     - name: Upload hello
       uses: actions/upload-artifact@master
       with:
         name: dist
-        path: libs/hellow_c++/hello
+        path: hello.img
 
     
