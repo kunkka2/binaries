@@ -3,45 +3,24 @@ on:
   workflow_dispatch:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        permissions:
-            contents: write
-        steps:
-        - name: Checkout sources
-          uses: actions/checkout@v2
-          with:
-            repository: 'tramhao/termusic'
-            submodules: true
-        - uses: pguyot/arm-runner-action@v2.5.2
-          with:
-            base_image: https://dietpi.com/downloads/images/DietPi_RPi-ARMv8-Bullseye.img.xz
-            cpu: cortex-a53
-            bind_mount_repository: true
-            image_additional_mb: 10240
-            optimize_image: false
-            commands: |
-                # Rust complains (rightly) that $HOME doesn't match eid home
-                export HOME=/root
-                # Workaround to CI worker being stuck on Updating crates.io index
-                export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
-                # Install setup prerequisites
-                apt-get update -y --allow-releaseinfo-change
-                apt-get upgrade -y
-                apt-get autoremove -y
-                apt-get install curl
-                curl https://sh.rustup.rs -sSf | sh -s -- -y
-                . "$HOME/.cargo/env"
-                curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash
-                # Install build tools and tauri-cli requirements
-                apt-get install -y libwebkit2gtk-4.0-dev build-essential wget libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libasound2-dev libdbus-1-dev pkg-config protobuf-compiler libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libmpv-dev 
-                cargo build --features cover,all-backends --release --all --locked
-                ls target && ls target/release
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: setup qemu
+      uses: docker/setup-qemu-action@v3
+      with:
+        platforms: arm64
+    - name: build hello
+      run: |
+        cd libs/hellow_c++
+        make
+        ls
+        pwd
+    - name: Upload hello
+      uses: actions/upload-artifact@master
+      with:
+        name: dist
+        path: libs/hellow_c++/hello
 
-        - name: Release
-          uses: softprops/action-gh-release@v2
-          with:
-            tag_name: Release.termusic
-            files: |
-                target/release/termusic
-                target/release/termusic-server
+    
