@@ -16,6 +16,10 @@ jobs:
           make
           ls
           pwd
+    - name: list folder
+      run: |
+        sudo apt-get install -y tree
+        tree
     - name: Upload hello
       uses: actions/upload-artifact@master
       with:
