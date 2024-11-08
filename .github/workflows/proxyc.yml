@@ -48,4 +48,4 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: proxyc-${{ matrix.cpu }}
-        path: ./target/release/proxc
+        path: ./bin/target/release/proxyc
