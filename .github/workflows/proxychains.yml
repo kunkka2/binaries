@@ -32,8 +32,12 @@ jobs:
         commands: |
           ./configure
           make
+          mkdir dist
+          cp libproxychains4.so dist/.
+          cp proxychains4 dist/.
+          cp proxychains4-daemon dist/.
     - name: Upload build
       uses: actions/upload-artifact@master
       with:
         name: proxychains4-${{ matrix.cpu }}
-        path: ./proxychains4
+        path: ./dist
