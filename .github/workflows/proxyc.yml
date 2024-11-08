@@ -29,6 +29,11 @@ jobs:
       if: matrix.cpu == 'x86-64'
       run: |
         cargo build -r
+        rm -fr dist
+        cp ./target/release/proxyc dist/.
+        cp libproxyc dist/.
+        cp proxyc.toml dist/.
+
     - name: configure
       if: matrix.cpu == 'arm64'
       uses: pguyot/arm-runner-action@v2
@@ -48,4 +53,4 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: proxyc-${{ matrix.cpu }}
-        path: ./target/release/proxyc
+        path: ./dist
