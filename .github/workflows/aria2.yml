@@ -44,7 +44,7 @@ jobs:
         autoreconf -i
     - name: Setup compiler flags
       run: |
-        asanflags="-fsanitize=address,undefined -fno-sanitize-recover=undefined"
+        asanflags="-fsanitize=address,undefined -fno-sanitize-recover=undefined,-fverify_asan_link_order=0 "
 
         CPPFLAGS="$asanflags -g3"
         LDFLAGS="$asanflags"
@@ -55,10 +55,10 @@ jobs:
       run: |
         ./configure --with-gnutls --without-openssl $FEATURE_FLAGS
     - run: echo 3333
-    - name: Configure autotools (Linux, openssl)
-      run: |
-        ./configure --without-gnutls --with-openssl $FEATURE_FLAGS ARIA2_STATIC=yes 
-        ls
+    # - name: Configure autotools (Linux, openssl)
+    #   run: |
+    #     ./configure --without-gnutls --with-openssl $FEATURE_FLAGS ARIA2_STATIC=yes 
+    #     ls
 
     
     - name: Build aria2
