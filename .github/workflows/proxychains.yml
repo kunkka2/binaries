@@ -5,8 +5,11 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
-        cpu: [x86-64, arm64]
+        include:
+            - cpu: x86-64
+            - cpu: arm64
 
     runs-on: ubuntu-latest
 
