@@ -42,7 +42,7 @@ jobs:
         autoreconf -i
     - name: Setup compiler flags
       run: |
-        asanflags="-fsanitize=address,undefined -fno-sanitize-recover=undefined -fverify_asan_link_order=0 "
+        asanflags="-fsanitize=address,undefined -fno-sanitize-recover=undefined -fverify-asan-link-order=0 "
 
         CPPFLAGS="$asanflags -g3"
         LDFLAGS="$asanflags"
