@@ -49,9 +49,9 @@ jobs:
       run: |
         export ASAN_OPTIONS="detect_leaks=0"
         #./configure --with-gnutls --without-openssl $FEATURE_FLAGS
-        export CFLAGS="${CFLAGS} -fsanitize=address"
-        export CXXFLAGS="${CXXFLAGS} -fsanitize=address"
-        export LDFLAGS="${LDFLAGS} -fsanitize=address"
+        export CFLAGS="${CFLAGS} -fsanitize=undefined"
+        export CXXFLAGS="${CXXFLAGS} -fsanitize=undefined"
+        export LDFLAGS="${LDFLAGS} -fsanitize=undefined"
         ./configure
     - run: echo 3333
     # - name: Configure autotools (Linux, openssl)
