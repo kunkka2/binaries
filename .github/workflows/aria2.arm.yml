@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    
+    - uses: actions/cleanup-runner@v2
     - name: build hello
       uses: pguyot/arm-runner-action@v2
       with: 
@@ -16,6 +16,7 @@ jobs:
         bind_mount_repository: true
         image_additional_mb: true
         commands: |
+          sudp apt-get autoremove
           sudo apt-get update
           sudo apt-get install -y \
           g++-12 \
@@ -34,7 +35,10 @@ jobs:
           libssh2-1-dev \
           libcppunit-dev
           autoreconf -i
-          export ASAN_OPTIONS=verify_asan_link_order=0
+          export ASAN_OPTIONS="detect_leaks=0"
+          export CFLAGS="${CFLAGS} -fsanitize=undefined"
+          export CXXFLAGS="${CXXFLAGS} -fsanitize=undefined"
+          export LDFLAGS="${LDFLAGS} -fsanitize=undefined"
           ./configure 
           make
     - name: Upload hello
