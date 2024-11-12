@@ -14,6 +14,8 @@ jobs:
         base_image: raspios_lite_arm64:latest
         # Bind mount the repository within the image instead of copying it. Default is to copy files.
         bind_mount_repository: true
+        # Enlarge the image by this number of MB. Default is to not enlarge the image.
+        image_additional_mb: 2048
         commands: |
           cd libs/hellow_c++
           make
