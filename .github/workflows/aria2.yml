@@ -67,7 +67,7 @@ jobs:
         #make
         rm  -fr dddist
         mkdir dddist
-        cp src/aria2c dddist/aria2c
+        #cp src/aria2c dddist/aria2c
         cp Makefile* dddist/.
         ls
     - name: Upload build
