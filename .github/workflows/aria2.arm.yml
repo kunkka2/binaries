@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/cleanup-runner@v2
     - name: build hello
       uses: pguyot/arm-runner-action@v2
       with: 
