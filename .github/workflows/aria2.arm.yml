@@ -1,0 +1,43 @@
+name: Arm Aria2
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: build hello
+      uses: pguyot/arm-runner-action@v2
+      with: 
+        base_image: raspios_lite_arm64:latest
+        # Bind mount the repository within the image instead of copying it. Default is to copy files.
+        bind_mount_repository: true
+        commands: |
+          sudo apt-get update
+          sudo apt-get install -y \
+          g++-12 \
+          clang-15 \
+          autoconf \
+          automake \
+          autotools-dev \
+          autopoint \
+          libtool \
+          pkg-config \
+          libssl-dev \
+          libgnutls28-dev \
+          libc-ares-dev \
+          zlib1g-dev \
+          libsqlite3-dev \
+          libssh2-1-dev \
+          libcppunit-dev
+          autoreconf -i
+          export ASAN_OPTIONS=verify_asan_link_order=0
+          ./configure 
+          make
+    - name: Upload hello
+      uses: actions/upload-artifact@master
+      with:
+        name: dist
+        path: src/aria2c
