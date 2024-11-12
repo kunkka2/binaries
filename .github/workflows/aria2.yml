@@ -53,6 +53,7 @@ jobs:
         export CXXFLAGS="${CXXFLAGS} -fsanitize=undefined"
         export LDFLAGS="${LDFLAGS} -fsanitize=undefined"
         ./configure
+        make
     - run: echo 3333
     # - name: Configure autotools (Linux, openssl)
     #   run: |
