@@ -13,7 +13,7 @@ jobs:
         base_image: raspios_lite_arm64:latest
         # Bind mount the repository within the image instead of copying it. Default is to copy files.
         bind_mount_repository: true
-        image_additional_mb: true
+        image_additional_mb: 2048
         commands: |
           sudo apt-get autoremove
           sudo apt-get update
