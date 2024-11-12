@@ -49,7 +49,7 @@ jobs:
       run: |
         export ASAN_OPTIONS=verify_asan_link_order=0
         #./configure --with-gnutls --without-openssl $FEATURE_FLAGS
-        ./configure 
+        ./configure -fsanitize=address
     - run: echo 3333
     # - name: Configure autotools (Linux, openssl)
     #   run: |
