@@ -13,6 +13,7 @@ jobs:
         run: |
           cargo install cargo-modules
           cargo install flamegraph
+          cargo install bat
           sudo apt-get install -y linux-tools-common linux-tools-generic linux-tools-`uname -r` dnsutils
           wget https://github.com/mokeyish/smartdns-rs/releases/download/v0.9.0/smartdns-x86_64-unknown-linux-musl-v0.9.0.tar.gz
           tar -zxvf smartdns-x86_64-unknown-linux-musl-v0.9.0.tar.gz
@@ -20,7 +21,8 @@ jobs:
           mkdir dist
           cp ../conf/smartdns.conf smartdns.conf 
           sudo chmod +x ../shell/smart.sh
-          sudo ../shell/smart.sh & sleep 5 && dig servicewechat.com @127.0.0.1 -p 12753 > dist/dig.log & sleep 12 && sudo pkill smartdns
+          #sudo ../shell/smart.sh & sleep 5 && dig servicewechat.com @127.0.0.1 -p 12753 > dist/dig.log & sleep 12 && sudo pkill smartdns
+          sudo `which flamegraph` -- `which bat` ./smartdns.conf > dist/compress.log
           pwd
           ls
           echo "run ls .."
