@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: actions/checkout@v4
       - name: Install cargo modules
         run: |
           cargo install cargo-modules
@@ -17,7 +18,8 @@ jobs:
           tar -zxvf smartdns-x86_64-unknown-linux-musl-v0.9.0.tar.gz
           cd smartdns-x86_64-unknown-linux-musl
           mkdir dist
-          sudo `which flamegraph` -- ./smartdns run -c ./smartdns.conf > dist/compress.log & dig servicewechat.com @127.0.0.1 > dist/dig.log & sleep 8 && sudo pkill flamegraph
+          cp ../conf/smartdns.conf smartdns.conf 
+          sudo `which flamegraph` -- ./smartdns run -c ./smartdns.conf > dist/compress.log & dig servicewechat.com @127.0.0.1 > dist/dig.log & sleep 8 && sudo pkill smartdns
           sudo chmod 777 -R dist
           sudo chmod 777 flamegraph.svg
           cp flamegraph.svg dist/smartdns.svg
