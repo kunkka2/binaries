@@ -19,7 +19,12 @@ jobs:
           cd smartdns-x86_64-unknown-linux-musl
           mkdir dist
           cp ../conf/smartdns.conf smartdns.conf 
-          sudo `which flamegraph` -- ./smartdns run -c ./smartdns.conf > dist/compress.log 2>&1 & sleep 5 && dig servicewechat.com @127.0.0.1 -p 12753 > dist/dig.log & sleep 12 && sudo pkill smartdns
+          sudo chmod +x ../shell/smart.sh
+          sudo ../shell/smart.sh & sleep 5 && dig servicewechat.com @127.0.0.1 -p 12753 > dist/dig.log & sleep 12 && sudo pkill smartdns
+          pwd
+          ls
+          echo "run ls .."
+          ls ..
           sudo chmod 777 -R dist
           sudo chmod 777 flamegraph.svg || echo "no flamegraph.svg "
           cp flamegraph.svg dist/smartdns.svg || echo "no flamegraph.svg "

@@ -1,0 +1,1 @@
+sudo `which flamegraph` -- ./smartdns run -c ./smartdns.conf > dist/compress.log
