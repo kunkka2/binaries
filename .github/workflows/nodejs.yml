@@ -1,0 +1,26 @@
+name: Nodejs Vxxx
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout
+        id: check
+        uses: actions/checkout@v3
+        with:
+          repository: 'firefox-devtools/profiler'
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.19
+      - run: |
+          yarn install
+          npm run build-prod
+      - name: Upload apk to artifact 3
+        uses: actions/upload-artifact@master
+        with:
+          name: dist
+          path: dist
