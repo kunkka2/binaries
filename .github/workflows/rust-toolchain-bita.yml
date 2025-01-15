@@ -18,7 +18,7 @@ jobs:
         with:
           target: aarch64-unknown-linux-gnu
       - uses: pguyot/arm-runner-action@v2
-        if: "not runok" == "true"
+        if: ${{ "not runok" == "true" }}
         with:
           base_image: https://dietpi.com/downloads/images/DietPi_RPi-ARMv8-Bullseye.img.xz
           cpu: cortex-a53
