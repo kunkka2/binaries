@@ -11,7 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: 'lorenzo-frittoli/wifi-cli'
+          #repository: 'lorenzo-frittoli/wifi-cli'
+          repository: 'araujobsd/ifwifi'
       - name: ubuntu-2204-run
         uses: pguyot/arm-runner-action@v2.5.2
         with:
