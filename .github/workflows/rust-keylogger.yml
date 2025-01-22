@@ -1,0 +1,19 @@
+name: Rust Key Logger
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            repository: 'sachin-vs/rust-keylogger'
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: build project
+        run: cargo build -r
+      - name: Upload Artifacts sign
+        uses: actions/upload-artifact@master
+        with:
+          name: rust-keylogger
+          path: target/release/rust-keylogger
