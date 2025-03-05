@@ -26,7 +26,7 @@ jobs:
         with:
           command: build
           target: ${{ matrix.platform.target }}
-          args: "--locked --release"
+          args: "--locked --release --features rustls-tls"
           strip: true
       - name: Upload Artifacts sign
         uses: actions/upload-artifact@master
