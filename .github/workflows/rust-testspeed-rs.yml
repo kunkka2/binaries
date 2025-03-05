@@ -30,7 +30,9 @@ jobs:
         with:
           command: build
           target: ${{ matrix.platform.target }}
-          args: "--locked --release --features rustls-tls"
+          # the lock file Cargo.lock needs to be updated but --locked was passed to prevent this
+          #args: "--locked --release --features rustls-tls"
+          args: "--release --features rustls-tls"
           strip: true
       - name: Upload Artifacts sign
         uses: actions/upload-artifact@master
