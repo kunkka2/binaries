@@ -21,6 +21,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: nelsonjchen/speedtest-rs
+      - name: merge cargo toml
+        run: |
+          sed '/^\[dependencies\.reqwest/ { N; s/\nversion = "0.12"/\nversion = "0.12"\ndefault-features = false/ }' 1
+          car Cargo.toml
       - name: Build binary
         uses: houseabsolute/actions-rust-cross@v1
         with:
