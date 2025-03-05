@@ -24,7 +24,7 @@ jobs:
       - name: merge cargo toml
         run: |
           sed -i '/^\[dependencies\.reqwest/ { N; s/\nversion = "0.12"/\nversion = "0.12"\ndefault-features = false/ }' Cargo.toml
-          car Cargo.toml
+          cat Cargo.toml
       - name: Build binary
         uses: houseabsolute/actions-rust-cross@v1
         with:
