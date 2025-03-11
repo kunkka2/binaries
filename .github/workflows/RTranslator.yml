@@ -36,8 +36,8 @@ jobs:
           mv TranslationFragment.java app/src/main/java/nie/translator/rtranslator/voice_translation/_text_translation/TranslationFragment.java
           wget https://github.com/kunkka2/binaries/raw/refs/heads/main/others/RTranslator/DownloadFragment.java
           mv DownloadFragment.java app/src/main/java/nie/translator/rtranslator/access/DownloadFragment.java
-          wget https://github.com/kunkka2/binaries/raw/refs/heads/main/others/RTranslator/build.gradle
-          mv build.gradle app/build.gradle
+          wget https://github.com/kunkka2/binaries/raw/refs/heads/main/others/RTranslator/build.gradle -O build.gradle.tmp
+          mv build.gradle.tmp app/build.gradle
       # Create APK Release
       - name: Build apk release project (APK)
         run: ./gradlew assemble
