@@ -230,6 +230,7 @@ public class TranslationFragment extends Fragment {
             @Override
             public void onTranslatedText(String text, long resultID, boolean isFinal, CustomLocale languageOfText) {
                 outputText.setText(text);
+                ttsOutputButton.performClick();
                 if(isFinal){
                     activateTranslationButton();
                 }
@@ -259,7 +260,7 @@ public class TranslationFragment extends Fragment {
                             deactivateTranslationButton();
                             //we start the translation
                             global.getTranslator().translate(finalText, firstLanguage, secondLanguage, BEAM_SIZE, true);
-                            ttsOutputButton.performClick();
+                            
                         }
 
                         @Override
