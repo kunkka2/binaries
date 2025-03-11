@@ -38,6 +38,8 @@ jobs:
           mv DownloadFragment.java app/src/main/java/nie/translator/rtranslator/access/DownloadFragment.java
           wget https://github.com/kunkka2/binaries/raw/refs/heads/main/others/RTranslator/build.gradle -O build.gradle.tmp
           mv build.gradle.tmp app/build.gradle
+          wget https://github.com/kunkka2/binaries/raw/refs/heads/main/others/RTranslator/AndroidManifest.xml
+          mv AndroidManifest.xml app/src/main/AndroidManifest.xml
       # Create APK Release
       - name: Build apk release project (APK)
         run: ./gradlew assemble
