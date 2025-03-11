@@ -259,7 +259,7 @@ public class TranslationFragment extends Fragment {
                             deactivateTranslationButton();
                             //we start the translation
                             global.getTranslator().translate(finalText, firstLanguage, secondLanguage, BEAM_SIZE, true);
-                            ttsButtonOutput.performClick();
+                            ttsOutputButton.performClick();
                         }
 
                         @Override
