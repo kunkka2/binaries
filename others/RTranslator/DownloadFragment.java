@@ -47,16 +47,16 @@ import nie.translator.rtranslator.voice_translation.neural_networks.NeuralNetwor
 
 public class DownloadFragment extends Fragment {
     public static final String[] DOWNLOAD_URLS = {
-            "http://192.168.1.159/niedev/RTranslator/releases/download/2.0.0/NLLB_cache_initializer.onnx",
-            "http://192.168.1.159/niedev/RTranslator/releases/download/2.0.0/NLLB_decoder.onnx",
-            "http://192.168.1.159/niedev/RTranslator/releases/download/2.0.0/NLLB_embed_and_lm_head.onnx",
-            "http://192.168.1.159/niedev/RTranslator/releases/download/2.0.0/NLLB_encoder.onnx",
-            "http://192.168.1.159/niedev/RTranslator/releases/download/2.0.0/Whisper_cache_initializer.onnx",
-            "http://192.168.1.159/niedev/RTranslator/releases/download/2.0.0/Whisper_cache_initializer_batch.onnx",
-            "http://192.168.1.159/niedev/RTranslator/releases/download/2.0.0/Whisper_decoder.onnx",
-            "http://192.168.1.159/niedev/RTranslator/releases/download/2.0.0/Whisper_detokenizer.onnx",
-            "http://192.168.1.159/niedev/RTranslator/releases/download/2.0.0/Whisper_encoder.onnx",
-            "http://192.168.1.159/niedev/RTranslator/releases/download/2.0.0/Whisper_initializer.onnx"
+            "http://127.0.0.1:8080/download/2.0.0/NLLB_cache_initializer.onnx",
+            "http://127.0.0.1:8080/download/2.0.0/NLLB_decoder.onnx",
+            "http://127.0.0.1:8080/download/2.0.0/NLLB_embed_and_lm_head.onnx",
+            "http://127.0.0.1:8080/download/2.0.0/NLLB_encoder.onnx",
+            "http://127.0.0.1:8080/download/2.0.0/Whisper_cache_initializer.onnx",
+            "http://127.0.0.1:8080/download/2.0.0/Whisper_cache_initializer_batch.onnx",
+            "http://127.0.0.1:8080/download/2.0.0/Whisper_decoder.onnx",
+            "http://127.0.0.1:8080/download/2.0.0/Whisper_detokenizer.onnx",
+            "http://127.0.0.1:8080/download/2.0.0/Whisper_encoder.onnx",
+            "http://127.0.0.1:8080/download/2.0.0/Whisper_initializer.onnx"
     };
     public static final String[] DOWNLOAD_NAMES = {
             "NLLB_cache_initializer.onnx",
