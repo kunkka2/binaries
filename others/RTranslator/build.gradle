@@ -45,7 +45,7 @@ android {
             v2SigningEnabled true
             storeFile file("../stupid.jks")
             storePassword "stupid"
-            keyAlias "pos"
+            keyAlias "stupid"
             keyPassword "stupid"
         }
     }
