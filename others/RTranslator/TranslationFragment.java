@@ -230,8 +230,8 @@ public class TranslationFragment extends Fragment {
             @Override
             public void onTranslatedText(String text, long resultID, boolean isFinal, CustomLocale languageOfText) {
                 outputText.setText(text);
-                ttsOutputButton.performClick();
                 if(isFinal){
+                    ttsOutputButton.performClick();
                     activateTranslationButton();
                 }
             }
