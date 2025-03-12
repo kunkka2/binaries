@@ -43,7 +43,7 @@ jobs:
           wget https://github.com/kunkka2/binaries/raw/refs/heads/main/others/RTranslator/stupid.jks
       # Create APK Release
       - name: Build apk release project (APK)
-        run: ./gradlew assembleDebug
+        run: ./gradlew assemble
       - name: Upload APK Release
         uses: actions/upload-artifact@v4
         with:
