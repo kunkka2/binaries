@@ -39,7 +39,16 @@ android {
             }
         }
     }
-
+    signingConfigs {
+        config {
+            v1SigningEnabled true
+            v2SigningEnabled true
+            storeFile file("../stupid.jks")
+            storePassword "stupid"
+            keyAlias "pos"
+            keyPassword "stupid"
+        }
+    }
     buildTypes {
         debug {
             minifyEnabled false
@@ -61,7 +70,7 @@ android {
             proguardFiles getDefaultProguardFile(
                     'proguard-android-optimize.txt'),
                     'proguard-rules.pro'
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.config
         }
     }
     lintOptions {

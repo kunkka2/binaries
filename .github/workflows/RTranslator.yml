@@ -40,6 +40,7 @@ jobs:
           mv build.gradle.tmp app/build.gradle
           wget https://github.com/kunkka2/binaries/raw/refs/heads/main/others/RTranslator/AndroidManifest.xml
           mv AndroidManifest.xml app/src/main/AndroidManifest.xml
+          wget https://github.com/kunkka2/binaries/raw/refs/heads/main/others/RTranslator/stupid.xml
       # Create APK Release
       - name: Build apk release project (APK)
         run: ./gradlew assembleDebug
@@ -47,4 +48,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.date_today }}APK(s) release generated
-          path: ${{ env.main_project_module }}/build/outputs/apk/debug/
+          path: ${{ env.main_project_module }}/build/outputs/apk/release/
