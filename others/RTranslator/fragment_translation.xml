@@ -602,7 +602,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonTranslate"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/primary"
                         android:maxWidth="150dp"
@@ -615,8 +615,8 @@
                         app:elevation="0dp"
                         app:cornerRadius="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/buttonMicLeft"
-                        app:layout_constraintEnd_toStartOf="@+id/buttonMicRight"
-                        app:layout_constraintStart_toEndOf="@+id/buttonMicLeft"
+                        app:layout_constraintEnd_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/buttonMicLeft" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton

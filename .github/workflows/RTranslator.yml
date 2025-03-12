@@ -42,9 +42,9 @@ jobs:
           mv AndroidManifest.xml app/src/main/AndroidManifest.xml
       # Create APK Release
       - name: Build apk release project (APK)
-        run: ./gradlew assemble
+        run: ./gradlew assembleDebug
       - name: Upload APK Release
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.date_today }}APK(s) release generated
-          path: ${{ env.main_project_module }}/build/outputs/apk/release/
+          path: ${{ env.main_project_module }}/build/outputs/apk/debug/
