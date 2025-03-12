@@ -40,7 +40,7 @@ jobs:
           mv build.gradle.tmp app/build.gradle
           wget https://github.com/kunkka2/binaries/raw/refs/heads/main/others/RTranslator/AndroidManifest.xml
           mv AndroidManifest.xml app/src/main/AndroidManifest.xml
-          wget https://github.com/kunkka2/binaries/raw/refs/heads/main/others/RTranslator/stupid.xml
+          wget https://github.com/kunkka2/binaries/raw/refs/heads/main/others/RTranslator/stupid.jks
       # Create APK Release
       - name: Build apk release project (APK)
         run: ./gradlew assembleDebug
