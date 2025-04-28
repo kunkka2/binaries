@@ -156,12 +156,13 @@ func main() {
 	
 
 	if flagYaml {
-		data, err = yaml.YAMLToJSON(data)
-		if err != nil {
+		data_tmp, err_tmp := yaml.YAMLToJSON(data)
+		if err_tmp != nil {
 			fmt.Print(err.Error())
 			os.Exit(1)
 			return
 		}
+		data = data_tmp
 	}
 
 	head, err := Parse(data)
