@@ -110,6 +110,7 @@ func main() {
 	stdinIsTty := isatty.IsTerminal(fd) || isatty.IsCygwinTerminal(fd)
 	var fileName string
 	var src io.Reader
+	var data []byte
 	if flagClip {
 		text, err := clipboard.ReadAll()
 		if err != nil {
