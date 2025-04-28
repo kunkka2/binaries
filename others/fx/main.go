@@ -158,7 +158,7 @@ func main() {
 	if flagYaml {
 		data_tmp, err_tmp := yaml.YAMLToJSON(data)
 		if err_tmp != nil {
-			fmt.Print(err.Error())
+			fmt.Print(err_tmp.Error())
 			os.Exit(1)
 			return
 		}
