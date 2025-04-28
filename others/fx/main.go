@@ -145,7 +145,8 @@ func main() {
 			reduce(os.Args[1:])
 			return
 		}
-		data, err := io.ReadAll(src)
+		data_tmp, err := io.ReadAll(src)
+		data = data_tmp
 		if err != nil {
 			panic(err)
 		}
