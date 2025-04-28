@@ -22,6 +22,7 @@ func usage(keyMap KeyMap) string {
     curl ... | fx
 
   %v
+	-c, --clip            treat clipboard as a raw string
     -h, --help            print help
     -v, --version         print version
     --themes              print themes

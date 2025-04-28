@@ -34,6 +34,7 @@ import (
 var (
 	flagYaml bool
 	flagComp bool
+	flagClip bool
 )
 
 func main() {
@@ -60,7 +61,8 @@ func main() {
 		os.Exit(0)
 		return
 	}
-
+	
+	flagClip=false
 	var args []string
 	for _, arg := range os.Args[1:] {
 		if strings.HasPrefix(arg, "--comp") {
@@ -68,6 +70,9 @@ func main() {
 			continue
 		}
 		switch arg {
+		case "-c", "--clip":
+			flagClip = true
+			break
 		case "-h", "--help":
 			fmt.Println(usage(keyMap))
 			return
@@ -105,39 +110,48 @@ func main() {
 	stdinIsTty := isatty.IsTerminal(fd) || isatty.IsCygwinTerminal(fd)
 	var fileName string
 	var src io.Reader
-
-	if stdinIsTty && len(args) == 0 {
-		fmt.Println(usage(keyMap))
-		return
-	} else if stdinIsTty && len(args) == 1 {
-		filePath := args[0]
-		f, err := os.Open(filePath)
+	if flagClip {
+		text, err := clipboard.ReadAll()
 		if err != nil {
-			var pathError *fs.PathError
-			if errors.As(err, &pathError) {
-				fmt.Println(err)
-				os.Exit(1)
-			} else {
-				panic(err)
+			panic(err)
+		}
+		data = []byte(text)
+	} else {	
+		if stdinIsTty && len(args) == 0 {
+			fmt.Println(usage(keyMap))
+			return
+		} else if stdinIsTty && len(args) == 1 {
+			filePath := args[0]
+			f, err := os.Open(filePath)
+			if err != nil {
+				var pathError *fs.PathError
+				if errors.As(err, &pathError) {
+					fmt.Println(err)
+					os.Exit(1)
+				} else {
+					panic(err)
+				}
 			}
+			fileName = path.Base(filePath)
+			src = f
+			hasYamlExt, _ := regexp.MatchString(`(?i)\.ya?ml$`, fileName)
+			if !flagYaml && hasYamlExt {
+				flagYaml = true
+			}
+		} else if !stdinIsTty && len(args) == 0 {
+			src = os.Stdin
+		} else {
+			reduce(os.Args[1:])
+			return
 		}
-		fileName = path.Base(filePath)
-		src = f
-		hasYamlExt, _ := regexp.MatchString(`(?i)\.ya?ml$`, fileName)
-		if !flagYaml && hasYamlExt {
-			flagYaml = true
+		data, err := io.ReadAll(src)
+		if err != nil {
+			panic(err)
 		}
-	} else if !stdinIsTty && len(args) == 0 {
-		src = os.Stdin
-	} else {
-		reduce(os.Args[1:])
-		return
 	}
+	
 
-	data, err := io.ReadAll(src)
-	if err != nil {
-		panic(err)
-	}
+	
 
 	if flagYaml {
 		data, err = yaml.YAMLToJSON(data)
