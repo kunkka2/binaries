@@ -7,7 +7,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
-    
+    - name: Download all
+      run: |
+        curl -L -o go1.24.3.linux-arm64.tar.gz https://go.dev/dl/go1.24.3.linux-arm64.tar.gz
+        curl -L -o source.zip https://cdn.zabbix.com/zabbix/sources/stable/7.2/zabbix-7.2.6.tar.gz
+        tar -zxvf source.zip
     - name: build hello
       uses: pguyot/arm-runner-action@v2
       with: 
@@ -17,11 +21,10 @@ jobs:
         # Enlarge the image by this number of MB. Default is to not enlarge the image.
         image_additional_mb: 2048
         commands: |
-          curl -L -o go1.24.3.linux-arm64.tar.gz https://go.dev/dl/go1.24.3.linux-arm64.tar.gz
+          ls
+          pwd
           tar -C /usr/local -xzf go1.24.3.linux-amd64.tar.gz
           go version
-          curl -L -o source.zip https://cdn.zabbix.com/zabbix/sources/stable/7.2/zabbix-7.2.6.tar.gz
-          tar -zxvf source.zip
           cd zabbix-7.2.6
           ./configure --enable-agent2
           make install
