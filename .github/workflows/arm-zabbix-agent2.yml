@@ -24,7 +24,7 @@ jobs:
           ls
           pwd
           echo $PATH
-          tar -C /usr/local -xzf go1.24.3.linux-arm64.tar.gz
+          tar -C /usr/local/bin -xzf go1.24.3.linux-arm64.tar.gz
           go version
           cd zabbix-7.2.6
           ./configure --enable-agent2
