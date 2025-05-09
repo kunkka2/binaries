@@ -49,7 +49,7 @@ jobs:
           libpcre3 \
           libpcre3-dev \
           libcppunit-dev
-          ./configure --enable-agent2
+          ./configure --enable-agent --enable-agent2
           make install
           mkdir outs
           cd outs
