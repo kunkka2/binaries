@@ -46,6 +46,7 @@ jobs:
           zlib1g-dev \
           libsqlite3-dev \
           libssh2-1-dev \
+           libpcre++0 \
           libcppunit-dev
           ./configure --enable-agent2
           make install
