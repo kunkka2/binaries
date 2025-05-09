@@ -116,11 +116,13 @@ func ParseSOCKS5Proxy(proxyURL string) (*ProxyConfig, error) {
 
 
 // dialSOCKS5 creates a connection, using a SOCKS5 proxy if proxyConfig is non-nil
-func dialSOCKS5(proxyConfig *ProxyConfig, network, addr string, timeout time.Duration) (net.Conn, error) {
+func dialSOCKS5(proxyConfig *ProxyConfig, network, addr string, timeout time.Duration,localAddr *net.Addr,) (net.Conn, error) {
     // If proxyConfig is nil, use direct connection
     if proxyConfig == nil {
+		//d := net.Dialer{Timeout: connect_timeout, LocalAddr: *localAddr}
         dialer := &net.Dialer{
             Timeout: timeout,
+			LocalAddr: *localAddr,
         }
         conn, err := dialer.Dial(network, addr)
         if err != nil {
@@ -163,7 +165,7 @@ func open(address string, localAddr *net.Addr, timeout time.Duration, connect_ti
 	c = &Connection{state: connStateConnect, compress: true, timeout: timeout, timeoutMode: timeoutMode}
 	d := net.Dialer{Timeout: connect_timeout, LocalAddr: *localAddr}
 	//c.conn, err = d.Dial("tcp", address)
-	c.conn, err = dialSOCKS5(proxyConfig,"tcp",address,timeout)
+	c.conn, err = dialSOCKS5(*proxyConfig,"tcp",address,timeout,localAddr)
 
 	if nil != err {
 		return
@@ -453,7 +455,7 @@ func Exchange(addrpool AddressSet, localAddr *net.Addr, timeout time.Duration, c
 	}
 
 	for i := 0; i < addrpool.count(); i++ {
-		c, err = open(addrpool.Get(), localAddr, timeout, connect_timeout, TimeoutModeFixed, proxyConfig, tlsconfig)
+		c, err = open(addrpool.Get(), localAddr, timeout, connect_timeout, TimeoutModeFixed, *proxyConfig, tlsconfig)
 		if err == nil {
 			break
 		}
@@ -515,7 +517,7 @@ func ExchangeWithRedirect(addrpool AddressSet, localAddr *net.Addr, timeout time
 retry:
 	retries++
 
-	b, errs, err := Exchange(addrpool, localAddr, timeout, connectTimeout, data, proxyConfig, args...)
+	b, errs, err := Exchange(addrpool, localAddr, timeout, connectTimeout, data, *proxyConfig, args...)
 
 	if errs != nil {
 		return b, errs, err

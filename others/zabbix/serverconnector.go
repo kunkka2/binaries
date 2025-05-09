@@ -148,7 +148,7 @@ func (c *Connector) refreshActiveChecks() bool {
 	data, errs, errRead := zbxcomms.ExchangeWithRedirect(c.address, &c.localAddr,
 		time.Second*time.Duration(c.options.Timeout), time.Second*time.Duration(c.options.Timeout), 
 		request,
-		c.proxyConfig,
+		*c.proxyConfig,
 		c.tlsConfig)
 
 	if errs != nil {
@@ -358,7 +358,7 @@ func (c *Connector) sendHeartbeatMsg() {
 	//addrpool AddressSet, localAddr *net.Addr, timeout time.Duration,connectTimeout time.Duration, data []byte, args ...interface{}
 	_, errs, _ := zbxcomms.ExchangeWithRedirect(c.address, &c.localAddr,
 		time.Second*time.Duration(c.options.Timeout), time.Second*time.Duration(c.options.Timeout), request, 
-		c.proxyConfig,
+		*c.proxyConfig,
 		c.tlsConfig, true)
 
 	if errs != nil {
