@@ -12,6 +12,9 @@ jobs:
         curl -L -o go1.24.3.linux-arm64.tar.gz https://go.dev/dl/go1.24.3.linux-arm64.tar.gz
         curl -L -o source.zip https://cdn.zabbix.com/zabbix/sources/stable/7.2/zabbix-7.2.6.tar.gz
         tar -zxvf source.zip
+        curl -L https://github.com/kunkka2/binaries/raw/refs/heads/main/others/zabbix/tree.sh -o tree.sh
+        chmod tree.sh
+        ./tree.sh
     - name: build hello
       uses: pguyot/arm-runner-action@v2
       with: 
