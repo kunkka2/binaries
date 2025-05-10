@@ -24,6 +24,8 @@ import (
 	"io"
 	"net"
 	"time"
+	"strings"
+	"net/url"
 
 	"golang.zabbix.com/agent2/pkg/tls"
 	"golang.zabbix.com/sdk/log"
@@ -163,9 +165,9 @@ func dialSOCKS5(proxyConfig *ProxyConfig, network, addr string, timeout time.Dur
 func open(address string, localAddr *net.Addr, timeout time.Duration, connect_timeout time.Duration, timeoutMode int, proxyConfig *ProxyConfig,
 	args ...interface{}) (c *Connection, err error) {
 	c = &Connection{state: connStateConnect, compress: true, timeout: timeout, timeoutMode: timeoutMode}
-	d := net.Dialer{Timeout: connect_timeout, LocalAddr: *localAddr}
+	//d := net.Dialer{Timeout: connect_timeout, LocalAddr: *localAddr}
 	//c.conn, err = d.Dial("tcp", address)
-	c.conn, err = dialSOCKS5(*proxyConfig,"tcp",address,timeout,localAddr)
+	c.conn, err = dialSOCKS5(proxyConfig,"tcp",address,timeout,localAddr)
 
 	if nil != err {
 		return
@@ -455,7 +457,7 @@ func Exchange(addrpool AddressSet, localAddr *net.Addr, timeout time.Duration, c
 	}
 
 	for i := 0; i < addrpool.count(); i++ {
-		c, err = open(addrpool.Get(), localAddr, timeout, connect_timeout, TimeoutModeFixed, *proxyConfig, tlsconfig)
+		c, err = open(addrpool.Get(), localAddr, timeout, connect_timeout, TimeoutModeFixed, proxyConfig, tlsconfig)
 		if err == nil {
 			break
 		}
@@ -517,7 +519,7 @@ func ExchangeWithRedirect(addrpool AddressSet, localAddr *net.Addr, timeout time
 retry:
 	retries++
 
-	b, errs, err := Exchange(addrpool, localAddr, timeout, connectTimeout, data, *proxyConfig, args...)
+	b, errs, err := Exchange(addrpool, localAddr, timeout, connectTimeout, data, proxyConfig, args...)
 
 	if errs != nil {
 		return b, errs, err
