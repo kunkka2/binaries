@@ -53,7 +53,7 @@ type Connector struct {
 	firstActiveChecksLog       bool
 	resultCache                resultcache.ResultCache
 	taskManager                scheduler.Scheduler
-	proxyConfig                zbxcomms.ProxyConfig
+	proxyConfig                *zbxcomms.ProxyConfig
 	options                    *agent.AgentOptions
 	tlsConfig                  *tls.Config
 }
@@ -148,7 +148,7 @@ func (c *Connector) refreshActiveChecks() bool {
 	data, errs, errRead := zbxcomms.ExchangeWithRedirect(c.address, &c.localAddr,
 		time.Second*time.Duration(c.options.Timeout), time.Second*time.Duration(c.options.Timeout), 
 		request,
-		*c.proxyConfig,
+		c.proxyConfig,
 		c.tlsConfig)
 
 	if errs != nil {
@@ -358,7 +358,7 @@ func (c *Connector) sendHeartbeatMsg() {
 	//addrpool AddressSet, localAddr *net.Addr, timeout time.Duration,connectTimeout time.Duration, data []byte, args ...interface{}
 	_, errs, _ := zbxcomms.ExchangeWithRedirect(c.address, &c.localAddr,
 		time.Second*time.Duration(c.options.Timeout), time.Second*time.Duration(c.options.Timeout), request, 
-		*c.proxyConfig,
+		c.proxyConfig,
 		c.tlsConfig, true)
 
 	if errs != nil {
@@ -455,7 +455,7 @@ func New(taskManager scheduler.Scheduler, addresses []string, hostname string,
 	}
 
 	
-	if proxyConfig, errProxy := zbxcomms.ParseSOCKS5Proxy(options.PassSocks); proxyConfig != nil {
+	if proxyConfig, errProxy := zbxcomms.ParseSOCKS5Proxy(options.PassSocks); errProxy == nil {
 		c.proxyConfig = proxyConfig
 	}
 
