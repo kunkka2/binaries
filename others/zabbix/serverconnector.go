@@ -471,6 +471,7 @@ func New(taskManager scheduler.Scheduler, addresses []string, hostname string,
 		tlsConfig: c.tlsConfig,
 		timeout:   options.Timeout,
 		session:   c.session,
+		proxyConfig: c.proxyConfig,
 	}
 	c.resultCache = resultcache.New(&agent.Options, c.clientID, ac)
 

@@ -30,6 +30,7 @@ type activeConnection struct {
 	hostname  string
 	localAddr net.Addr
 	tlsConfig *tls.Config
+	proxyConfig *zbxcomms.ProxyConfig
 	timeout   int
 	session   string
 }
