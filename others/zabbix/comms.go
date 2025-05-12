@@ -91,9 +91,9 @@ var proxyConfig *ProxyConfig
 // init initializes proxyConfig by parsing ALL_PROXY
 func InitProxyConfig(proxyURL string) {
     var err error
-	proxyConfig, err = parseSOCKS5Proxy(proxyURL)
+	proxyConfig, err = ParseSOCKS5Proxy(proxyURL)
 	if err != nil {
-		log.Printf("zbxcomms: failed to parse ALL_PROXY: %v", err)
+		log.Errf("zbxcomms: failed to parse ALL_PROXY: %v", err)
 		proxyConfig = nil // Ensure proxyConfig is nil on error
 	}
 }
