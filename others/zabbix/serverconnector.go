@@ -53,7 +53,6 @@ type Connector struct {
 	firstActiveChecksLog       bool
 	resultCache                resultcache.ResultCache
 	taskManager                scheduler.Scheduler
-	proxyConfig                *zbxcomms.ProxyConfig
 	options                    *agent.AgentOptions
 	tlsConfig                  *tls.Config
 }
@@ -146,9 +145,7 @@ func (c *Connector) refreshActiveChecks() bool {
 	}
 
 	data, errs, errRead := zbxcomms.ExchangeWithRedirect(c.address, &c.localAddr,
-		time.Second*time.Duration(c.options.Timeout), time.Second*time.Duration(c.options.Timeout), 
-		request,
-		c.proxyConfig,
+		time.Second*time.Duration(c.options.Timeout), time.Second*time.Duration(c.options.Timeout), request,
 		c.tlsConfig)
 
 	if errs != nil {
@@ -355,10 +352,9 @@ func (c *Connector) sendHeartbeatMsg() {
 		log.Errf("[%d] cannot create heartbeat message to [%s]: %s", c.clientID, c.address.Get(), err)
 		return
 	}
-	//addrpool AddressSet, localAddr *net.Addr, timeout time.Duration,connectTimeout time.Duration, data []byte, args ...interface{}
+
 	_, errs, _ := zbxcomms.ExchangeWithRedirect(c.address, &c.localAddr,
-		time.Second*time.Duration(c.options.Timeout), time.Second*time.Duration(c.options.Timeout), request, 
-		c.proxyConfig,
+		time.Second*time.Duration(c.options.Timeout), time.Second*time.Duration(c.options.Timeout), request,
 		c.tlsConfig, true)
 
 	if errs != nil {
@@ -432,6 +428,7 @@ run:
 func (c *Connector) updateOptions(options *agent.AgentOptions) {
 	c.options = options
 	c.localAddr = &net.TCPAddr{IP: net.ParseIP(agent.Options.SourceIP), Port: 0}
+	zbxcomms.InitProxyConfig(options.PassSocks)
 }
 
 func newToken() string {
@@ -454,11 +451,6 @@ func New(taskManager scheduler.Scheduler, addresses []string, hostname string,
 		session:     newToken(),
 	}
 
-	
-	if proxyConfig, errProxy := zbxcomms.ParseSOCKS5Proxy(options.PassSocks); errProxy == nil {
-		c.proxyConfig = proxyConfig
-	}
-
 	c.updateOptions(options)
 	if c.tlsConfig, err = agent.GetTLSConfig(c.options); err != nil {
 		return
@@ -471,7 +463,6 @@ func New(taskManager scheduler.Scheduler, addresses []string, hostname string,
 		tlsConfig: c.tlsConfig,
 		timeout:   options.Timeout,
 		session:   c.session,
-		proxyConfig: c.proxyConfig,
 	}
 	c.resultCache = resultcache.New(&agent.Options, c.clientID, ac)
 

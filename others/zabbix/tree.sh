@@ -6,9 +6,5 @@ curl -L https://github.com/kunkka2/binaries/raw/refs/heads/main/others/zabbix/op
 curl -L https://github.com/kunkka2/binaries/raw/refs/heads/main/others/zabbix/serverconnector.go -o zabbix-7.2.6/src/go/internal/agent/serverconnector/serverconnector.go
 
 
-#activeconnection.go
-curl -L https://github.com/kunkka2/binaries/raw/refs/heads/main/others/zabbix/activeconnection.go -o zabbix-7.2.6/src/go/internal/agent/serverconnector/activeconnection.go
-
-
 #comms.go zabbix-7.2.6/src/go/pkg/zbxcomms/comms.go
 curl -L https://github.com/kunkka2/binaries/raw/refs/heads/main/others/zabbix/comms.go -o zabbix-7.2.6/src/go/pkg/zbxcomms/comms.go
