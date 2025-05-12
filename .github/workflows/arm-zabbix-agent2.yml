@@ -53,7 +53,7 @@ jobs:
           libpcre3-dev \
           libcurl4-openssl-dev \
           libcppunit-dev
-          ./configure --enable-agent --enable-agent2 --with-net-snmp --with-libcurl --with-libxml2 --with-openipmi --with-ares
+          ./configure --enable-agent --enable-agent2 --with-net-snmp --with-libcurl --with-libxml2 --with-openipmi --with-ares --with-openssl
           make install
           mkdir outs
           cd outs
