@@ -51,6 +51,7 @@ jobs:
           libssh2-1-dev \
           libpcre3 \
           libpcre3-dev \
+          libcurl4-openssl-dev \
           libcppunit-dev
           ./configure --enable-agent --enable-agent2 --with-net-snmp --with-libcurl --with-libxml2 --with-openipmi --with-ares
           make install
