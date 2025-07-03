@@ -10,15 +10,17 @@ jobs:
         run: |
           git clone https://github.com/gfxfundamentals/webgl2-fundamentals.git
           git clone https://github.com/gfxfundamentals/webgl-fundamentals.git
-      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          version: latest
+          node-version: latest
       - name: build v2
         run: |
           cd webgl2-fundamentals
+          sed -i "s/( rootFolder: 'webgl', )/( rootFolder: 'webgl2\/fundamentals\/webgl', )/g" Gruntfile.js
+          grep rootFolder Gruntfile.js
           npm install
           npm run build
-      - name: Upload build
+      - name: Upload build v2
         uses: actions/upload-artifact@master
         with:
           name: webgl2-fundamentals
@@ -26,9 +28,11 @@ jobs:
       - name: build v1
         run: |
           cd webgl-fundamentals
+          sed -i "s/( rootFolder: 'webgl', )/( rootFolder: 'webgl1\/fundamentals\/webgl', )/g" Gruntfile.js
+          grep rootFolder Gruntfile.js
           npm install
           npm run build
-      - name: Upload build
+      - name: Upload build v1
         uses: actions/upload-artifact@master
         with:
           name: webgl-fundamentals
