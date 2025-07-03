@@ -16,8 +16,8 @@ jobs:
       - name: build v2
         run: |
           cd webgl2-fundamentals
-          pnpm install
-          pnpm run build
+          npm install
+          npm run build
       - name: Upload build
         uses: actions/upload-artifact@master
         with:
@@ -26,8 +26,8 @@ jobs:
       - name: build v1
         run: |
           cd webgl-fundamentals
-          pnpm install
-          pnpm run build
+          npm install
+          npm run build
       - name: Upload build
         uses: actions/upload-artifact@master
         with:
