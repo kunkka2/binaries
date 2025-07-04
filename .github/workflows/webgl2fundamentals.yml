@@ -16,7 +16,8 @@ jobs:
       - name: build v2
         run: |
           cd webgl2-fundamentals
-          sed -i "s/( rootFolder: 'webgl', )/( rootFolder: 'webgl2\/fundamentals\/webgl', )/g" Gruntfile.js
+          #http://localhost:8080/webgl2/fundamentals/
+          sed -i "s/rootFolder: 'webgl',/rootFolder: 'webgl2\/fundamentals\/webgl',/g" Gruntfile.js
           grep rootFolder Gruntfile.js
           npm install
           npm run build
@@ -28,7 +29,8 @@ jobs:
       - name: build v1
         run: |
           cd webgl-fundamentals
-          sed -i "s/( rootFolder: 'webgl', )/( rootFolder: 'webgl1\/fundamentals\/webgl', )/g" Gruntfile.js
+          ##http://localhost:8080/webgl2/fundamentals/
+          sed -i "s/rootFolder: 'webgl',/rootFolder: 'webgl1\/fundamentals\/webgl',/g" Gruntfile.js
           grep rootFolder Gruntfile.js
           npm install
           npm run build
