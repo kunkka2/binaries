@@ -5,5 +5,5 @@ on:
 
 jobs:
   useyml:
-    uses: ./.github/zabbix-agent2/zabbix-agent2.yml@main
+    uses: .github/zabbix-agent2/zabbix-agent2.yml@main
 
