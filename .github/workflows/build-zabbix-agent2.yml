@@ -1,9 +1,0 @@
-# .github/workflows/ci/build.yml
-name: Build Zabbix Agent2
-on:
-  workflow_dispatch:
-
-jobs:
-  useyml:
-    uses: .github/workflows/zabbix-agent2/zabbix-agent2.yml@main
-

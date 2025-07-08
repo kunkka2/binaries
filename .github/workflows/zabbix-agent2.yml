@@ -1,6 +1,6 @@
 name: Zabbix agent2
 on:
-  workflow_call:
+  workflow_dispatch:
 
 jobs:
   okrun:
