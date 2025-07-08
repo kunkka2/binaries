@@ -1,0 +1,59 @@
+name: Zabbix agent2
+on:
+  workflow_call:
+
+jobs:
+  okrun:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Download all
+      run: |
+        curl -L -o go1.24.3.linux-arm64.tar.gz https://go.dev/dl/go1.24.3.linux-arm64.tar.gz
+        curl -L -o source.zip https://cdn.zabbix.com/zabbix/sources/stable/7.2/zabbix-7.2.6.tar.gz
+        tar -zxvf source.zip
+        curl -L https://github.com/kunkka2/binaries/raw/refs/heads/main/others/zabbix/tree.sh -o tree.sh
+        chmod +x tree.sh
+        ./tree.sh
+        ls
+        pwd
+        echo $PATH
+        tar -C /usr/local/ -xzf go1.24.3.linux-arm64.tar.gz
+        ln -s /usr/local/go/bin/go /usr/local/bin/go
+        ln -s /usr/local/go/bin/gofmt /usr/local/bin/gofmt
+        go version
+        cd zabbix-7.2.6
+        sudo apt-get autoremove
+        sudo apt-get update
+        sudo apt-get install -y \
+        g++-12 \
+        clang-15 \
+        autoconf \
+        automake \
+        autotools-dev \
+        autopoint \
+        libtool \
+        pkg-config \
+        libssl-dev \
+        libgnutls28-dev \
+        libc-ares-dev \
+        zlib1g-dev \
+        libsqlite3-dev \
+        libssh2-1-dev \
+        libpcre3 \
+        libpcre3-dev \
+        libcurl4-openssl-dev \
+        libcppunit-dev
+        ./configure --enable-agent --enable-agent2 --with-net-snmp --with-libcurl --with-libxml2 --with-openipmi --with-ares --with-openssl
+        make install
+        mkdir outs
+        cd outs
+        cp /usr/local/sbin/zabbix_agent2 .
+        cp /usr/local/bin/zabbix_sender .
+    - name: Upload hello
+      uses: actions/upload-artifact@master
+      with:
+        name: dist
+        path: zabbix-7.2.6/outs
+
+    
