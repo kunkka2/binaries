@@ -16,8 +16,8 @@ jobs:
       - name: build v2
         run: |
           cd webgl2-fundamentals
-          #http://localhost:8080/webgl2/fundamentals/
-          sed -i "s/https:\/\/webgl2fundamentals.org/http:\/\/localhost:8080\/webgl2\/fundamentals/g" Gruntfile.js
+          #webgl2.kunkka.proxy
+          sed -i "s/https:\/\/webgl2fundamentals.org/https:\/\/webgl2.kunkka.proxy/g" Gruntfile.js
           grep baseUrl Gruntfile.js
           npm install
           npm run build
@@ -29,8 +29,8 @@ jobs:
       - name: build v1
         run: |
           cd webgl-fundamentals
-          #http://localhost:8080/webgl2/fundamentals/
-          sed -i "s/https:\/\/webglfundamentals.org/http:\/\/localhost:8080\/webgl1\/fundamentals/g" Gruntfile.js
+          #webgl.kunkka.proxy
+          sed -i "s/https:\/\/webglfundamentals.org/https:\/\/webgl.kunkka.proxy/g" Gruntfile.js
           grep baseUrl Gruntfile.js
           npm install
           npm run build
