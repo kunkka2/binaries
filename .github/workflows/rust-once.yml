@@ -1,0 +1,19 @@
+name: Rust mdbook utils
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            repository: 'john-cd/mdbook-utils'
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: build project
+        run: cargo build -r
+      - name: Upload Artifacts sign
+        uses: actions/upload-artifact@master
+        with:
+          name: mdbook-utils
+          path: target/release/mdbook-utils
