@@ -9,11 +9,15 @@ jobs:
       - uses: actions/checkout@v2
         with:
             repository: 'john-cd/mdbook-utils'
+            path: mdbook-utils
       - uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: build project
-        run: cargo build -r
+        run: |
+          cd mdbook-utils
+          sed -i 's#target-dir="/cargo-target-mdbook-utils/target"#target-dir="../cargo-target-mdbook-utils/target"#g' .cargo/config.toml
+          cargo build -r
       - name: Upload Artifacts sign
         uses: actions/upload-artifact@master
         with:
           name: mdbook-utils
-          path: target/release/mdbook-utils
+          path: cargo-target-mdbook-utils/target/release/mdbook-utils
