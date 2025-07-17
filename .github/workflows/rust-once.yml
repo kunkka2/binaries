@@ -17,9 +17,9 @@ jobs:
         run: |
           cd mdbook-utils
           sed -i 's#target-dir="/cargo-target-mdbook-utils/target"#target-dir="../cargo-target-mdbook-utils/target"#g' .cargo/config.toml
-          cargo build -r
+          cargo build -r --target x86_64-unknown-linux-musl
       - name: Upload Artifacts sign
         uses: actions/upload-artifact@master
         with:
           name: mdbook-utils
-          path: cargo-target-mdbook-utils/target/release/mdbook-utils
+          path: cargo-target-mdbook-utils/target/x86_64-unknown-linux-musl/release/mdbook-utils
