@@ -1,0 +1,24 @@
+name: Rust sort proxy
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Rust sort proxy
+    runs-on: ubuntu-22.04
+    permissions:
+            contents: write
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          target: x86_64-unknown-linux-musl
+      - name: musl build
+        run: |
+            cd others/bita
+            cargo build -r --target x86_64-unknown-linux-musl --bin sort
+      - name: Upload Artifacts sign
+        uses: actions/upload-artifact@master
+        with:
+          name: bita
+          path: others/bita/target/x86_64-unknown-linux-musl/release/sort
