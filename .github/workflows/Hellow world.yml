@@ -12,8 +12,8 @@ jobs:
         with:
           python-version: '3.14.0-rc.1' 
       - run: |
-          sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev
-          sudo apt-get install python3-lxml
-          pip install cryptography
-          pip install scrapy
+          sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev > /dev/null
+          sudo apt-get install python3-lxml > /dev/null
+          pip install cryptography > /dev/null
+          pip install scrapy > /dev/null
           scrapy --help
