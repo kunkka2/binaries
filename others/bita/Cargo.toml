@@ -1,0 +1,56 @@
+[package]
+name = "sortproxy"
+version = "0.12.0"
+authors = ["xx <xx@xx.xx>"]
+license = "MIT"
+edition = '2021'
+description = "checks"
+repository = "https://github.com/softtiny/softtiny.github.io"
+readme = "README.md"
+keywords = [
+  "proxy",
+]
+categories = ["fast", "speed"]
+
+[[bin]]
+name = "sort"
+path = "bins/sort.rs"
+
+
+[dependencies]
+clap = { version = "4.4.12" }
+blake2 = "0.10.0"
+log = "0.4.14"
+fern = "0.6.0"
+chrono = "0.4.19"
+futures = "0.3"
+futures-util = { version = "0.3.19", default-features = false, features = [
+  "std",
+] }
+tokio = { version = "1.24.1", features = [
+  "fs",
+  "io-std",
+  "macros",
+  "time",
+  "rt-multi-thread",
+] }
+bitar = { version = "0.12.0", path = "bitar", features = ["compress"] }
+url = "2.2.2"
+num_cpus = "1.13.1"
+async-trait = "0.1.52"
+anyhow = "1.0.52"
+
+[dependencies.reqwest]
+version = "0.12.1"
+default-features = false
+features = ["stream","socks"]
+
+[features]
+default = ["default-tls"]
+lzma-compression = ["bitar/lzma-compression"]
+zstd-compression = ["bitar/zstd-compression"]
+default-tls = ["reqwest/default-tls", "bitar/default-tls"]
+rustls-tls = ["reqwest/rustls-tls", "bitar/rustls-tls"]
+
+[dev-dependencies]
+tempfile = "3.9.0"
