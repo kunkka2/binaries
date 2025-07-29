@@ -64,7 +64,7 @@ async fn use_ip(ipport:String) -> Ipres{
 
     Ipres {
         usetime:Duration::from_secs(36000),
-        ipstr: ''.to_string(),
+        ipstr: "".to_string(),
     }
 }
 async fn ten_ok (works: &mut Arc<Mutex<Vec<Ipres>>>,sokcs: Vec<String>) {
