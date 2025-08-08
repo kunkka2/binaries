@@ -18,9 +18,7 @@ jobs:
           #Allow Warnings: Allow all warnings (default Deny Warnings: -D warnings).
           rustflags: "-A warnings"
       - name: musl build
-        run: |
-            sudo apt-get install musl-tools -y
-            cargo build -r 
+        run: cargo build -r 
       - name: Upload Artifacts sign
         uses: actions/upload-artifact@master
         with:
