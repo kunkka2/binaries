@@ -1,0 +1,28 @@
+name: Rust windows atuin
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Rust atuin wins
+    runs-on: windows-latest
+    permissions:
+            contents: write
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            repository: 'atuinsh/atuin'
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          target: x86_64-pc-windows-msvc
+          #Allow Warnings: Allow all warnings (default Deny Warnings: -D warnings).
+          rustflags: "-A warnings"
+      - name: musl build
+        run: |
+            sudo apt-get install musl-tools -y
+            cargo build -r 
+      - name: Upload Artifacts sign
+        uses: actions/upload-artifact@master
+        with:
+          name: atuin
+          path: target/release/atuin.exe
