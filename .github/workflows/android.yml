@@ -17,8 +17,8 @@ jobs:
         id: check
         uses: actions/checkout@v3
         with:
-            repository: "wolopo/newtv"
-            #repository: "xiaoyaocz/dart_simple_live"
+            #repository: "wolopo/newtv"
+            repository: "xiaoyaocz/dart_simple_live"
       # Set Current Date As Env Variable
       - name: Set current date as env variable
         run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
@@ -48,11 +48,11 @@ jobs:
       # Create APK Release
       - name: Build apk release project (APK)
         run: |  
-          # cd ./simple_live_tv_app
+          cd ./simple_live_tv_app
           ./gradlew assembleDebug --warning-mode=all
       - name: Upload APK Release
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.date_today }}APK(s) release generated
-          #path: ./simple_live_tv_app/${{ env.main_project_module }}/build/outputs/apk/release/
-          path: ./${{ env.main_project_module }}/build/outputs/apk/debug/
+          path: ./simple_live_tv_app/${{ env.main_project_module }}/build/outputs/apk/debug/
+          #path: ./${{ env.main_project_module }}/build/outputs/apk/debug/
