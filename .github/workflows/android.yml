@@ -35,7 +35,7 @@ jobs:
         run: chmod +x ./gradlew
       - name: Decode keystore and create jks and properties file for signing the app
         run: |
-          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/keystore.jks
+          #echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/keystore.jks
           echo "storeFile=keystore.jks" >> key.properties
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
@@ -55,4 +55,4 @@ jobs:
         with:
           name: ${{ env.date_today }}APK(s) release generated
           #path: ./simple_live_tv_app/${{ env.main_project_module }}/build/outputs/apk/release/
-          path: ./${{ env.main_project_module }}/build/outputs/apk/release/
+          path: ./${{ env.main_project_module }}/build/outputs/apk/debug/
