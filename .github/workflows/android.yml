@@ -1,4 +1,4 @@
-name: Counting Sheep
+name: Build apk app
 env:
   # The name of the main module repository
   main_project_module: app
@@ -46,17 +46,8 @@ jobs:
           KEYSTORE_STORE_PASSWORD: ${{ secrets.JKS_PASS }}
       # Create APK Release
       - name: Build apk release project (APK)
-        run: |
-          curl -L https://github.com/softtiny/Counting_sheep/releases/latest/download/update-changelog.json -o old-update.json
-          python build.py
-          cat update.json
+        run: |  
           ./gradlew assemble --warning-mode=all
-      - name: Make Release Data
-        run: |
-          info=`python -c 'import json;update=open("./update.json");data=json.load(update);update.close();print(data["latestVersion"]+".apk")'`
-          cp ${{ env.main_project_module }}/build/outputs/apk/release/app-release.apk $info
-          cp update.json update-changelog.json
-          echo "release_apkname=$info" >> $GITHUB_ENV
       - name: Upload APK Release
         uses: actions/upload-artifact@v4
         with:
