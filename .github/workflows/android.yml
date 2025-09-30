@@ -35,6 +35,7 @@ jobs:
         uses: subosito/flutter-action@v2
         id: flutter-action
         with:
+            flutter-version: 3.22.3
             channel: stable
             cache: true
       - name: Build apk debug project (APK)
