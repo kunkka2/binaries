@@ -46,12 +46,12 @@ jobs:
       # Create APK debug
       - name: Build apk debug project (APK)
         run: |  
-          cd ./simple_live_tv_app
+          cd ./simple_live_tv_app/android
           chmod +x ./gradlew
           ./gradlew assembleDebug --warning-mode=all
       - name: Upload APK debug
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.date_today }}APK(s) debug generated
-          path: ./simple_live_tv_app/${{ env.main_project_module }}/build/outputs/apk/debug/
+          path: ./simple_live_tv_app/android/${{ env.main_project_module }}/build/outputs/apk/debug/
           #path: ./${{ env.main_project_module }}/build/outputs/apk/debug/
