@@ -31,24 +31,16 @@ jobs:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '17'
           cache: 'gradle'
-      - name: Decode keystore and create jks and properties file for signing the app
-        run: |
-          #echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/keystore.jks
-          echo "storeFile=keystore.jks" >> key.properties
-          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
-          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
-          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
-        env:
-          PLAY_STORE_UPLOAD_KEY: ${{ secrets.JKSFILE }}
-          KEYSTORE_KEY_ALIAS: ${{ secrets.JKS_ALIAS }}
-          KEYSTORE_KEY_PASSWORD: ${{ secrets.JKS_PASS }}
-          KEYSTORE_STORE_PASSWORD: ${{ secrets.JKS_PASS }}
-      # Create APK debug
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        id: flutter-action
+        with:
+            channel: stable
+            cache: true
       - name: Build apk debug project (APK)
         run: |  
-          cd ./simple_live_tv_app/android
-          chmod +x ./gradlew
-          ./gradlew assembleDebug --warning-mode=all
+          cd ./simple_live_tv_app/
+          flutter build apk
       - name: Upload APK debug
         uses: actions/upload-artifact@v4
         with:
