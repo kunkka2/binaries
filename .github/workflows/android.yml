@@ -31,8 +31,6 @@ jobs:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '17'
           cache: 'gradle'
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
       - name: Decode keystore and create jks and properties file for signing the app
         run: |
           #echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/keystore.jks
@@ -45,14 +43,15 @@ jobs:
           KEYSTORE_KEY_ALIAS: ${{ secrets.JKS_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.JKS_PASS }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.JKS_PASS }}
-      # Create APK Release
-      - name: Build apk release project (APK)
+      # Create APK debug
+      - name: Build apk debug project (APK)
         run: |  
           cd ./simple_live_tv_app
+          chmod +x ./gradlew
           ./gradlew assembleDebug --warning-mode=all
-      - name: Upload APK Release
+      - name: Upload APK debug
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.date_today }}APK(s) release generated
+          name: ${{ env.date_today }}APK(s) debug generated
           path: ./simple_live_tv_app/${{ env.main_project_module }}/build/outputs/apk/debug/
           #path: ./${{ env.main_project_module }}/build/outputs/apk/debug/
