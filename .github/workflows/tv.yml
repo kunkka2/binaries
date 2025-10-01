@@ -1,4 +1,4 @@
-name: Build tv app
+name: Build vv app
 env:
   # The name of the main module repository
   main_project_module: app
@@ -17,35 +17,42 @@ jobs:
         id: check
         uses: actions/checkout@v3
         with:
-            #repository: "wolopo/newtv"
-            repository: "xiaoyaocz/dart_simple_live"
+            repository: "ahmedamoharram/bluetooth-remote"
+            #repository: "xiaoyaocz/dart_simple_live"
       # Set Current Date As Env Variable
-      # - name: Set current date as env variable
-      #   run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-      # # Set Repository Name As Env Variable
-      # - name: Set repository name as env variable
-      #   run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
-      # - name: Set Up JDK
-      #   uses: actions/setup-java@v4
-      #   with:
-      #     distribution: 'zulu' # See 'Supported distributions' for available options
-      #     java-version: '17'
-      #     cache: 'gradle'
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        id: flutter-action
+      - name: Set current date as env variable
+        run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      # Set Repository Name As Env Variable
+      - name: Set repository name as env variable
+        run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
+      - name: Set Up JDK
+        uses: actions/setup-java@v4
         with:
-            flutter-version: 3.22.3
-            channel: stable
-            cache: true
-      - name: Build apk debug project (APK)
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '17'
+          cache: 'gradle'
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+      - name: Decode keystore and create jks and properties file for signing the app
+        run: |
+          #echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/keystore.jks
+          echo "storeFile=keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.JKSFILE }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.JKS_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.JKS_PASS }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.JKS_PASS }}
+      # Create APK Release
+      - name: Build apk release project (APK)
         run: |  
-          cd ./simple_live_tv_app/
-          sed -i 's/signingConfig signingConfigs.release/\/\/signingConfig signingConfigs.release/g' android/app/build.gradle
-          flutter build apk --debug
-      - name: Upload APK debug
+          # cd ./simple_live_tv_app
+          ./gradlew assembleDebug --warning-mode=all
+      - name: Upload APK Release
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.date_today }}APK(s) debug generated
-          path: ./simple_live_tv_app/build/app/outputs/flutter-apk/
-          #path: ./${{ env.main_project_module }}/build/outputs/apk/debug/
+          name: ${{ env.date_today }}APK(s) release generated
+          #path: ./simple_live_tv_app/${{ env.main_project_module }}/build/outputs/apk/release/
+          path: ./${{ env.main_project_module }}/build/outputs/apk/debug/
