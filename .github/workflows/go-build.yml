@@ -1,0 +1,32 @@
+name: hmgle/graftcp
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          repository: hmgle/graftcp
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.20
+      - name: Display Go version
+        run: |
+            go version
+            make
+            sudo apt install -y tree
+            tree
+            mkdir abcd
+            cp local/graftcp-local abcd/graftcp-local
+            cp local/mgraftcp abcd/mgraftcp
+            cp graftcp abcd/. || echo "not ..."
+      - name: build.zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: output-build
+          path: ./abcd
