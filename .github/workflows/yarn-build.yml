@@ -1,0 +1,31 @@
+name: RealKai42/qwerty-learner
+on:
+  push:
+    branches:
+      - master
+env:
+  REACT_APP_DEPLOY_ENV: pages
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.17.0]
+    steps:
+      # RealKai42/qwerty-learner
+      - uses: actions/checkout@v3
+        with:
+          repository: RealKai42/qwerty-learner
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Packages
+        run: yarn
+      - name: Build page
+        run: yarn build
+      - name: build.zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: output-build
+          path: ./build
