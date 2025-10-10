@@ -1,8 +1,8 @@
 name: RealKai42/qwerty-learner
 on:
   workflow_dispatch:
-env:
-  REACT_APP_DEPLOY_ENV: pages
+#env:
+  #REACT_APP_DEPLOY_ENV: pages
 jobs:
   deploy:
     runs-on: ubuntu-latest
