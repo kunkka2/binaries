@@ -1,8 +1,6 @@
 name: RealKai42/qwerty-learner
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 env:
   REACT_APP_DEPLOY_ENV: pages
 jobs:
