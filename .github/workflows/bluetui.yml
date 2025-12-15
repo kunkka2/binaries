@@ -1,0 +1,32 @@
+---
+name: Release
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: pythops/bluetui
+      - uses: cargo-bins/cargo-binstall@main
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+
+      - name: Build for x86_64 linux gnu
+        run: |
+          cargo build --release --target=x86_64-unknown-linux-musl
+          ls target/
+          ls target/x86_64-unknown-linux-musl || echo 222
+          ls target/release || echo 3333
+          cp target/x86_64-unknown-linux-musl/release/bluetui bluetui-x86_64-linux-gnu
+      - name: upload zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: output-build
+          path: ./bluetui-x86_64-linux-gnu
+
+      
