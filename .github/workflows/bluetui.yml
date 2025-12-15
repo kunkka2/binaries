@@ -1,5 +1,5 @@
 ---
-name: Release
+name: Release bluetui
 on:
   workflow_dispatch:
 jobs:
