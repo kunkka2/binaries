@@ -19,11 +19,12 @@ jobs:
         uses: taiki-e/install-action@v2
         with:
           tool: cross
-      - name: Build for x86_64 linux gnu
+      - name: Build for x86_64 linux musl
         run: |
           sudo apt-get update
-          sudo apt-get install -y libdbus-1-dev pkg-config
-          rustup target add x86_64-unknown-linux-musl
+          sudo apt-get install -y libdbus-1-dev pkg-config podman qemu-user-static
+          #rustup target add x86_64-unknown-linux-musl
+          export CROSS_CONTAINER_ENGINE=podman
           cross build --release --target=x86_64-unknown-linux-musl
           ls target/
           ls target/x86_64-unknown-linux-musl || echo 222
