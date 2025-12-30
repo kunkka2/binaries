@@ -134,7 +134,7 @@ jobs:
           git checkout .
 
           pushd src-tauri/gen/android
-          echo "keyAlias=${{ vars.KEY_ALIAS }}" > keystore.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" > keystore.properties
           echo "password=${{ secrets.KEY_PASSWORD }}" >> keystore.properties
           base64 -d <<< "${{ secrets.ANDROID_JKS_BASE64 }}" > $RUNNER_TEMP/keystore.jks
           echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
