@@ -1,0 +1,43 @@
+name: Rust MUSL BUILD
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Rust project
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: 'mokeyish/smartdns-rs'
+      - name: Install Rust Toolchain Components
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+      - name: Install just
+        uses: extractions/setup-just@v3
+      - name: Install cross
+        uses: taiki-e/install-action@v2
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        with:
+          tool: cross
+      - name: Install cargo-edit
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-edit
+      - name: Install patch-crate
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: patch-crate
+      - name: Build
+        run: cargo build --release --no-default-features --features common  --target=${{ matrix.target }}
+        env:
+          USE_CROSS: ${{ matrix.os == 'ubuntu-latest' }}
+
