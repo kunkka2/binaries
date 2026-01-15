@@ -1,3 +1,5 @@
+import tomllib
+import tomli_w
 with open("bluetui/Cargo.toml","r+b") as conf:
   data = tomllib.load(conf)
   conf.seek(0)

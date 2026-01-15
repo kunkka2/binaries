@@ -44,6 +44,7 @@ jobs:
       - name: config toml
         run: |
             curl -L https://github.com/kunkka2/binaries/raw/refs/heads/main/others/bluetui/toml.py -o toml.py
+            pip install tomli-w
             python toml.py
       - name: Build
         run: |
