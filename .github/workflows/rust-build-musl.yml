@@ -49,7 +49,7 @@ jobs:
       - name: Build
         run: |
             cd bluetui 
-            cross build --release --no-default-features --features common  --target=${{ matrix.target }}
+            cross build -p bluetui --release --target x86_64-unknown-linux-musl
         env:
           USE_CROSS: ${{ matrix.os == 'ubuntu-latest' }}
       - name: Upload Artifacts sign
