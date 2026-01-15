@@ -40,4 +40,8 @@ jobs:
         run: cargo build --release --no-default-features --features common  --target=${{ matrix.target }}
         env:
           USE_CROSS: ${{ matrix.os == 'ubuntu-latest' }}
-
+      - name: Upload Artifacts sign
+        uses: actions/upload-artifact@master
+        with:
+          name: smartdns-rs
+          path: target/x86_64-unknown-linux-musl/release/smartdns-rs
