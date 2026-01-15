@@ -44,4 +44,4 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: smartdns-rs
-          path: target/x86_64-unknown-linux-musl/release/smartdns-rs
+          path: target/x86_64-unknown-linux-musl/release/smartdns
