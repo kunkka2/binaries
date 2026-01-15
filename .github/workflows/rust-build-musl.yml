@@ -37,7 +37,7 @@ jobs:
         with:
           crate: patch-crate
       - name: Build
-        run: cargo build --release --no-default-features --features common  --target=${{ matrix.target }}
+        run: cross build --release --no-default-features --features common  --target=${{ matrix.target }}
         env:
           USE_CROSS: ${{ matrix.os == 'ubuntu-latest' }}
       - name: Upload Artifacts sign
