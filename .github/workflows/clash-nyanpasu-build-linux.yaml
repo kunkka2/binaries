@@ -1,0 +1,99 @@
+name: 'clash-nyanpasu Build Linux'
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          repository: libnyanpasu/clash-nyanpasu
+      - name: Install Rust nightly
+        run: |
+          rustup install nightly --profile minimal --no-self-update
+          rustup default nightly
+
+      - name: Setup Cargo binstall
+        uses: cargo-bins/cargo-binstall@main
+
+      - name: Setup Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libxdo-dev libappindicator3-dev librsvg2-dev patchelf openssl
+
+      - name: Install Node latest
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
+      - name: Install Node.js dependencies
+        run: pnpm i
+
+      - name: Prepare sidecars and resources
+        shell: bash
+        run: |
+           pnpm prepare:check
+
+      - name: Build UI
+        run: pnpm -F ui build
+
+      # ===========================
+      # GTK 图标修复步骤（适用于所有架构）
+      # ===========================
+      - name: Fix GTK Icon Names
+        run: |
+          ORIGINAL_NAME="Clash Nyanpasu"
+          FIXED_NAME="clash_nyanpasu"
+          ICON_SIZES=("32x32" "128x128" "256x256@2")
+
+          TARGET_DIR="backend/target/release"
+
+          for size in "${ICON_SIZES[@]}"; do
+            ICON_PATH="$TARGET_DIR/icons/hicolor/${size}/apps/${ORIGINAL_NAME}.png"
+            FIXED_ICON_PATH="$TARGET_DIR/icons/hicolor/${size}/apps/${FIXED_NAME}.png"
+            if [ -f "$ICON_PATH" ]; then
+              mv "$ICON_PATH" "$FIXED_ICON_PATH"
+              echo "Renamed $ICON_PATH -> $FIXED_ICON_PATH"
+            fi
+          done
+
+          DESKTOP_FILE="$TARGET_DIR/share/applications/${ORIGINAL_NAME}.desktop"
+          if [ -f "$DESKTOP_FILE" ]; then
+            sed -i "s/Icon=${ORIGINAL_NAME}/Icon=${FIXED_NAME}/g" "$DESKTOP_FILE"
+            echo "Updated desktop file Icon field"
+          fi
+
+          ICON_CACHE_DIR="$TARGET_DIR/icons/hicolor"
+          if [ -d "$ICON_CACHE_DIR" ]; then
+            gtk-update-icon-cache -f -t "$ICON_CACHE_DIR"
+            echo "GTK icon cache updated"
+          fi
+      # ===========================
+      - name: Tauri build (x86_64)
+        uses: tauri-apps/tauri-action@v0
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+          NIGHTLY: 'false'
+        with:
+          tagName: 20260204
+          releaseName: 'Clash Nyanpasu Dev'
+          releaseBody: 'More new features are now supported.'
+          releaseDraft: false
+          prerelease: true
+          tauriScript: pnpm tauri
+          args: ${{ '-f default-meta' }}
+      - name: Upload deb to Github Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Clash.Nyanpasu-linux-x86_64-deb
+          path: |
+            ./backend/target/**/*.deb
+            ./backend/target/**/*.deb.sha256
