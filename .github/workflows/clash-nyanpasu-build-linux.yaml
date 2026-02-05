@@ -85,11 +85,6 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           NIGHTLY: 'false'
         with:
-          tagName: 20260204
-          releaseName: 'Clash Nyanpasu Dev'
-          releaseBody: 'More new features are now supported.'
-          releaseDraft: false
-          prerelease: true
           tauriScript: pnpm tauri
           args: ${{ '-f default-meta' }}
       - name: Upload deb to Github Artifact
