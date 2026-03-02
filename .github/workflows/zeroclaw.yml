@@ -1,0 +1,33 @@
+name: Build zeroclaw
+on:
+  workflow_dispatch:
+jobs:
+  build-release:
+    name: Build x86_64-pc-windows-msvc
+    runs-on: windows-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          repository: zeroclaw-labs/zeroclaw
+      - uses: dtolnay/rust-toolchain@631a55b12751854ce901bb631d5902ceb48146f7 # stable
+        with:
+          toolchain: 1.92.0
+          targets: x86_64-pc-windows-msvc
+      - name: Build release
+        shell: bash
+        env:
+          LINKER_ENV: ""
+          LINKER: ""
+        run: |
+          cargo build --profile release-fast --locked --target x86_64-pc-windows-msvc
+      - name: Package (Windows)  
+        run: |
+            cd target/x86_64-pc-windows-msvc/release-fast
+            7z a ../../../zeroclaw-x86_64-pc-windows-msvc.zip zeroclaw.exe
+      - name: Upload artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: zeroclaw
+          path: zeroclaw-x86_64-pc-windows-msv.zip
+        
