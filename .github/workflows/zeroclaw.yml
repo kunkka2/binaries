@@ -20,8 +20,11 @@ jobs:
           LINKER_ENV: ""
           LINKER: ""
         run: |
+          sed -i 's/max_tokens_override: None,/max_tokens_override: Some(1024),/' ./src/providers/mod.rs
           sed -i 's/max_tokens: None,/max_tokens: Some(1024),/' ./src/tools/model_routing_config.rs
-          cargo build --profile release-fast --locked --target x86_64-pc-windows-msvc
+          cat ./src/tools/model_routing_config.rs
+          cat ./src/providers/mod.rs
+          cargo build --profile release-fast --locked --target x86_64-pc-windows-msvc > .logbuild
       - name: Package (Windows)  
         run: |
             cd target/x86_64-pc-windows-msvc/release-fast
