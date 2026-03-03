@@ -29,5 +29,5 @@ jobs:
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: zeroclaw
-          path: zeroclaw-x86_64-pc-windows-msv.zip
+          path: zeroclaw-x86_64-pc-windows-msvc.zip
         
