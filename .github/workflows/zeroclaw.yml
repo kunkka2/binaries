@@ -20,6 +20,7 @@ jobs:
           LINKER_ENV: ""
           LINKER: ""
         run: |
+          sed -i 's/max_tokens: None,/max_tokens: Some(1024),/' ./src/tools/model_routing_config.rs
           cargo build --profile release-fast --locked --target x86_64-pc-windows-msvc
       - name: Package (Windows)  
         run: |
