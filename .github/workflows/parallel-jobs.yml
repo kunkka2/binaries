@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Rathole download and run
         run: 
-            if [ ! -f .tmp];then
+            if [ ! -d .tmp ];then
                 mkdir .tmp
             fi
             cd .tmp
@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: shadowsocks download and run
         run: 
-            if [ ! -f .tmp];then
+            if [ ! -d .tmp ];then
                 mkdir .tmp
             fi
             cd .tmp
