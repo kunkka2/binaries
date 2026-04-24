@@ -15,6 +15,7 @@ jobs:
             curl --location https://github.com/rathole-org/rathole/releases/download/v0.4.8/rathole-x86_64-unknown-linux-musl.zip -o rathole-x86_64-unknown-linux-musl.zip
             7z l rathole-x86_64-unknown-linux-musl.zip
             7z x rathole-x86_64-unknown-linux-musl.zip
+            ./rathole --version
   shadowsocks-jobs:
     runs-on: ubuntu-latest
     steps:
@@ -28,6 +29,7 @@ jobs:
             7z x shadowsocks-v1.24.0.x86_64-unknown-linux-musl.tar.xz
             7z l shadowsocks-v1.24.0.x86_64-unknown-linux-musl.tar
             7z x shadowsocks-v1.24.0.x86_64-unknown-linux-musl.tar
+            ./ssclient --version
   pnpm-jobs:
     runs-on: ubuntu-latest
     steps:
