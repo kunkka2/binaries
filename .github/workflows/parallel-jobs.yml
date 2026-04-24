@@ -6,15 +6,30 @@ jobs:
   rathole-jobs:
     runs-on: ubuntu-latest
     steps:
-      - name: Print Hello World
-        run: echo "Hello, World!" && sleep 300
+      - name: Rathole download and run
+        run: 
+            if [ ! -f .tmp];then
+                mkdir .tmp
+            fi
+            cd .tmp
+            curl https://github.com/rathole-org/rathole/releases/download/v0.4.8/rathole-x86_64-unknown-linux-musl.zip -o rathole-x86_64-unknown-linux-musl.zip
+            7z l rathole-x86_64-unknown-linux-musl.zip
+            7z x rathole-x86_64-unknown-linux-musl.zip
   shadowsocks-jobs:
     runs-on: ubuntu-latest
     steps:
-      - name: Print Hello World
-        run: echo "Hello, World!" && sleep 400
+      - name: shadowsocks download and run
+        run: 
+            if [ ! -f .tmp];then
+                mkdir .tmp
+            fi
+            cd .tmp
+            curl  https://github.com/shadowsocks/shadowsocks-rust/releases/download/v1.24.0/shadowsocks-v1.24.0.x86_64-unknown-linux-musl.tar.xz -o shadowsocks-v1.24.0.x86_64-unknown-linux-musl.tar.xz
+            7z x shadowsocks-v1.24.0.x86_64-unknown-linux-musl.tar.xz
+            7z l shadowsocks-v1.24.0.x86_64-unknown-linux-musl.tar
+            7z x shadowsocks-v1.24.0.x86_64-unknown-linux-musl.tar
   pnpm-jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print Hello World
-        run: echo "Hello, World!" && sleep 342
+        run: echo "Hello, World!"
