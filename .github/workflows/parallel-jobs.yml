@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Rathole download and run
-        run: 
+        run: |
             if [ ! -d .tmp ];then
                 mkdir .tmp
             fi
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: shadowsocks download and run
-        run: 
+        run: |
             if [ ! -d .tmp ];then
                 mkdir .tmp
             fi
