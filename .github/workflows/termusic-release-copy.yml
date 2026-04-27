@@ -1,0 +1,78 @@
+name: Termusic release copy
+on:
+  workflow_dispatch:
+
+env:
+  BIN_NAME: termusic
+  BIN_NAME_SERVER: termusic-server 
+  PROJECT_NAME: termusic 
+  REPO_NAME: tramhao/termusic
+  # BREW_TAP: jondot/homebrew-tap
+
+jobs:
+  dist:
+    name: Dist
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false # don't fail other jobs if one fails
+      matrix:
+        build: [aarch64-linux ] #,aarch64-macos] #, aarch64-linux, x86_64-macos, x86_64-windows] #, x86_64-win-gnu, win32-msvc
+        include:
+        - build: aarch64-linux
+          os: ubuntu-20.04
+          rust: stable
+          target: aarch64-unknown-linux-gnu
+          cross: true
+        
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+        with:
+          repository: 'tramhao/termusic'
+          submodules: true
+
+      - name: Install ${{ matrix.rust }} toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ matrix.rust }}
+          targets: ${{ matrix.target }}
+      
+
+      - name: Install cross (cross)
+        if: matrix.cross
+        run: cargo install cross
+
+      - name: Install developer package dependencies
+        run: sudo apt-get remove -y libssl-dev && sudo apt-get update && sudo apt-get install libssl-dev libasound2-dev libdbus-1-dev pkg-config protobuf-compiler -y
+
+      - name: Build release binary (cross)
+        if: matrix.cross
+        run: cargo build --features cover,all-backends --release --all --locked --target ${{ matrix.target }}
+
+
+      - name: Strip release binary (arm)
+        if: matrix.build == 'aarch64-linux'
+        run: |
+          docker run --rm -v \
+            "$PWD/target:/target:Z" \
+            rustembedded/cross:${{ matrix.target }} \
+            aarch64-linux-gnu-strip \
+            /target/${{ matrix.target }}/release/$BIN_NAME
+          docker run --rm -v \
+            "$PWD/target:/target:Z" \
+            rustembedded/cross:${{ matrix.target }} \
+            aarch64-linux-gnu-strip \
+            /target/${{ matrix.target }}/release/$BIN_NAME_SERVER
+
+      - name: Build archive
+        shell: bash
+        run: |
+          mkdir dist
+          cp "target/${{ matrix.target }}/release/$BIN_NAME" "dist/"
+          cp "target/${{ matrix.target }}/release/$BIN_NAME_SERVER" "dist/"
+
+      - uses: actions/upload-artifact@v2.2.4
+        with:
+          name: bins-${{ matrix.build }}
+          path: dist
