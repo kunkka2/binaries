@@ -13,7 +13,7 @@ env:
 jobs:
   dist:
     name: Dist
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.build.os }}
     strategy:
       fail-fast: false # don't fail other jobs if one fails
       matrix:
@@ -36,7 +36,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: ${{ matrix.rust }}
-          targets: ${{ matrix.target }}
+          targets: ${{ matrix.build.target }}
       
 
       - name: Install developer package dependencies
@@ -50,10 +50,10 @@ jobs:
         shell: bash
         run: |
           mkdir dist
-          cp "target/${{ matrix.target }}/release/$BIN_NAME" "dist/"
-          cp "target/${{ matrix.target }}/release/$BIN_NAME_SERVER" "dist/"
+          cp "target/${{ matrix.build.target }}/release/$BIN_NAME" "dist/"
+          cp "target/${{ matrix.build.target }}/release/$BIN_NAME_SERVER" "dist/"
 
       - uses: actions/upload-artifact@v7
         with:
-          name: bins-${{ matrix.build }}
+          name: bins-${{ matrix.build.target }}
           path: dist
