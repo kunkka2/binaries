@@ -2,12 +2,13 @@ name: Termusic release copy
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 env:
   BIN_NAME: termusic
   BIN_NAME_SERVER: termusic-server 
   PROJECT_NAME: termusic 
-  REPO_NAME: tramhao/termusic
-  # BREW_TAP: jondot/homebrew-tap
 
 jobs:
   dist:
@@ -16,13 +17,12 @@ jobs:
     strategy:
       fail-fast: false # don't fail other jobs if one fails
       matrix:
-        build: [aarch64-linux ] #,aarch64-macos] #, aarch64-linux, x86_64-macos, x86_64-windows] #, x86_64-win-gnu, win32-msvc
-        include:
-        - build: aarch64-linux
-          os: ubuntu-22.04-arm
-          rust: stable
-          target: aarch64-unknown-linux-gnu
-          cross: false
+        rust: [stable]
+        build:
+          - archive: aarch64-linux
+            os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-musl
+            features: cover,all-backends,rusty-soundtouch
         
 
     steps:
@@ -40,10 +40,10 @@ jobs:
       
 
       - name: Install developer package dependencies
-        run: sudo apt-get remove -y libssl-dev && sudo apt-get update && sudo apt-get install libssl-dev libasound2-dev libdbus-1-dev pkg-config protobuf-compiler -y
+        run: sudo apt-get update && sudo apt-get install libasound2-dev libdbus-1-dev pkg-config protobuf-compiler libgstreamer1.0-0 libunwind-dev libgstreamer1.0-dev libmpv-dev
 
       - name: Build release binary
-        run: cargo build --features cover,all-backends --release --all --locked --target ${{ matrix.target }}
+        run: cargo build --release --workspace --features ${{ matrix.build.features }} --target ${{ matrix.build.target }}
 
 
       - name: Build archive
