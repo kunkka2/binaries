@@ -45,6 +45,8 @@ jobs:
       - name: Build release binary
         run: |
           rustup target add aarch64-unknown-linux-musl
+          export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER=aarch64-linux-gnu-gcc
+          export CC=aarch64-linux-gnu-gcc
           cargo build --release --workspace --features ${{ matrix.build.features }} --target ${{ matrix.build.target }}
 
 
