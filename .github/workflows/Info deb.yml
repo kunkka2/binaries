@@ -1,0 +1,48 @@
+name: Show and Test and Install 
+on:
+  workflow_dispatch:
+
+jobs:
+  check-deb-file:
+    runs-on: ${{ matrix.os }} #ubuntu-22.04-arm
+    strategy:
+      fail-fast: false # don't fail other jobs if one fails
+      matrix:
+        - os: ubuntu-22.04-arm
+        - os: ubuntu-24.04-arm
+    
+    steps:
+      - name: Download Deb
+        run: |
+            curl -L https://github.com/rustdesk/rustdesk/releases/download/1.4.6/rustdesk-1.4.6-aarch64.deb -o test.deb
+      - name: Tools Install
+        run: |
+            sudo apt-get install apt-rdepends
+            sudo apt install debtree
+      - name: test and check
+        run: |
+            ls -lh
+            echo "===== start ====="
+            dpkg --info test.deb
+
+            dpkg-deb --ctrl-tarfile test.deb | tar -tvf -
+            mkdir -p extracted-control
+            dpkg-deb -e test.deb ./extracted-control && cat ./extracted-control/control
+            dpkg-deb -x test.deb ./extracted-content
+            find ./extracted-content -type f
+
+            echo "===== simulate ====="
+            sudo apt-get install ./test.deb --simulate
+            sudo dpkg -i ./test.deb
+            echo "===== apt-rdepends ====="
+            apt-rdepends rustdesk
+            echo "===== debtree ====="
+            debtree rustdesk
+            echo "===== apt depends  ====="
+            apt depends rustdesk
+            echo "===== apt-cache depends ====="
+            apt-cache depends rustdesk
+            echo "===== apt-cache depends --recurse  ====="
+            apt-cache depends --recurse rustdesk
+            echo "===== apt-cache rdepends  ====="
+            apt-cache rdepends rustdesk
