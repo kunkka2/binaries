@@ -36,7 +36,6 @@ jobs:
             libxfixes3 \
             libxcb-shape0 \
             libxcb-xfixes0 \
-            libasound2 \
             libsystemd0 \
             curl \
             libva2 \
