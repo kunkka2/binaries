@@ -20,6 +20,12 @@ jobs:
         run: |
             sudo apt-get install apt-rdepends
             sudo apt install debtree
+      - name: Install libasound2 (Ubuntu 22.04 ARM)
+        if: matrix.os == 'ubuntu-22.04-arm'
+        run: sudo apt-get install -y libasound2
+      - name: Install libasound2t64 (Ubuntu 24.04 ARM)
+        if: matrix.os == 'ubuntu-24.04-arm'
+        run: sudo apt-get install -y libasound2t64
       - name: Dependencies Install
         run: |
             sudo apt update
