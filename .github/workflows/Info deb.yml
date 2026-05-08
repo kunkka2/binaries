@@ -8,8 +8,9 @@ jobs:
     strategy:
       fail-fast: false # don't fail other jobs if one fails
       matrix:
-        - os: ubuntu-22.04-arm
-        - os: ubuntu-24.04-arm
+        include:
+          - os: ubuntu-22.04-arm
+          - os: ubuntu-24.04-arm
     
     steps:
       - name: Download Deb
