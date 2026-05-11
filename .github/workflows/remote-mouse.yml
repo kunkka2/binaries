@@ -49,7 +49,7 @@ jobs:
           npm run build
           mv dist ../server/
           cd ../server
-          
+          sudo apt-get install -y libxdo3
           rustup target add aarch64-unknown-linux-musl
           export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER=aarch64-linux-gnu-gcc
           export CC=aarch64-linux-gnu-gcc
