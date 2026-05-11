@@ -62,7 +62,7 @@ jobs:
         shell: bash
         run: |
           mkdir dist
-          cp "server/target/${{ matrix.build.target }}/release/$BIN_NAME" "../dist/"
+          cp "server/target/${{ matrix.build.target }}/release/$BIN_NAME" "./dist/"
 
       - uses: actions/upload-artifact@v7
         with:
