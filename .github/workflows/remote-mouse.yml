@@ -45,7 +45,6 @@ jobs:
         run: |
           rm -fr dist
           rm -fr ./server/dist
-          mkdir dist
           cd client           
           npm install
           npm run build
