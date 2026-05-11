@@ -1,0 +1,62 @@
+name: Termusic release
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BIN_NAME: termusic
+  BIN_NAME_SERVER: termusic-server 
+  PROJECT_NAME: termusic 
+
+jobs:
+  dist:
+    name: Dist
+    runs-on: ${{ matrix.build.os }}
+    strategy:
+      fail-fast: false # don't fail other jobs if one fails
+      matrix:
+        rust: [stable]
+        build:
+          - archive: aarch64-linux
+            os: ubuntu-22.04-arm
+            target: aarch64-unknown-linux-gnu # aarch64-unknown-linux-musl
+            features: cover,all-backends,rusty-soundtouch
+        
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+        with:
+          repository: 'tramhao/termusic'
+          submodules: true
+
+      - name: Install ${{ matrix.rust }} toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ matrix.rust }}
+          targets: ${{ matrix.build.target }}
+
+      - name: Install developer package dependencies
+        run: sudo apt-get update && sudo apt-get install libasound2-dev libdbus-1-dev pkg-config protobuf-compiler libgstreamer1.0-0 libunwind-dev libgstreamer1.0-dev libmpv-dev
+
+      - name: Build release binary
+        run: |
+          rustup target add aarch64-unknown-linux-musl
+          export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER=aarch64-linux-gnu-gcc
+          export CC=aarch64-linux-gnu-gcc
+          cargo build --release --workspace --features ${{ matrix.build.features }} --target ${{ matrix.build.target }}
+
+
+      - name: Build archive
+        shell: bash
+        run: |
+          mkdir dist
+          cp "target/${{ matrix.build.target }}/release/$BIN_NAME" "dist/"
+          cp "target/${{ matrix.build.target }}/release/$BIN_NAME_SERVER" "dist/"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: bins-${{ matrix.build.target }}
+          path: dist

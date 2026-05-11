@@ -1,4 +1,4 @@
-name: Termusic release copy
+name: Remote mouse web
 on:
   workflow_dispatch:
 
@@ -6,9 +6,8 @@ permissions:
   contents: read
 
 env:
-  BIN_NAME: termusic
-  BIN_NAME_SERVER: termusic-server 
-  PROJECT_NAME: termusic 
+  BIN_NAME: webpad
+
 
 jobs:
   dist:
@@ -21,16 +20,14 @@ jobs:
         build:
           - archive: aarch64-linux
             os: ubuntu-22.04-arm
-            target: aarch64-unknown-linux-gnu # aarch64-unknown-linux-musl
-            features: cover,all-backends,rusty-soundtouch
+            target: aarch64-unknown-linux-gnu 
         
 
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
         with:
-          repository: 'tramhao/termusic'
-          submodules: true
+          repository: 'lfuaz/remote-mouse'
 
       - name: Install ${{ matrix.rust }} toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -38,23 +35,32 @@ jobs:
           toolchain: ${{ matrix.rust }}
           targets: ${{ matrix.build.target }}
 
-      - name: Install developer package dependencies
-        run: sudo apt-get update && sudo apt-get install libasound2-dev libdbus-1-dev pkg-config protobuf-compiler libgstreamer1.0-0 libunwind-dev libgstreamer1.0-dev libmpv-dev
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
 
       - name: Build release binary
         run: |
+          rm -fr dist
+          rm -fr ./server/dist
+          mkdir dist
+          cd client           
+          npm install
+          npm run build
+          mv dist ../server/
+          cd ../server
+          
           rustup target add aarch64-unknown-linux-musl
           export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER=aarch64-linux-gnu-gcc
           export CC=aarch64-linux-gnu-gcc
-          cargo build --release --workspace --features ${{ matrix.build.features }} --target ${{ matrix.build.target }}
+          cargo build --release --target ${{ matrix.build.target }}
 
 
       - name: Build archive
         shell: bash
         run: |
           mkdir dist
-          cp "target/${{ matrix.build.target }}/release/$BIN_NAME" "dist/"
-          cp "target/${{ matrix.build.target }}/release/$BIN_NAME_SERVER" "dist/"
+          cp "target/${{ matrix.build.target }}/release/$BIN_NAME" "../dist/"
 
       - uses: actions/upload-artifact@v7
         with:
