@@ -55,13 +55,14 @@ jobs:
           export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER=aarch64-linux-gnu-gcc
           export CC=aarch64-linux-gnu-gcc
           cargo build --release --target ${{ matrix.build.target }}
+          ls target
 
 
       - name: Build archive
         shell: bash
         run: |
           mkdir dist
-          cp "target/${{ matrix.build.target }}/release/$BIN_NAME" "../dist/"
+          cp "server/target/${{ matrix.build.target }}/release/$BIN_NAME" "../dist/"
 
       - uses: actions/upload-artifact@v7
         with:
