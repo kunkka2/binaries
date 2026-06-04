@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2001-2025 Zabbix SIA
+** Copyright (C) 2001-2026 Zabbix SIA
 **
 ** This program is free software: you can redistribute it and/or modify it under the terms of
 ** the GNU Affero General Public License as published by the Free Software Foundation, version 3.
@@ -28,6 +28,7 @@ import (
 	"net/url"
 
 	"golang.zabbix.com/agent2/pkg/tls"
+	"golang.zabbix.com/sdk/errs"
 	"golang.zabbix.com/sdk/log"
 	"golang.org/x/net/proxy"
 )
@@ -69,6 +70,16 @@ type Connection struct {
 	compress    bool
 	timeout     time.Duration
 	timeoutMode int
+}
+
+// ConnectionInterface is interface for connection with Server or Proxy.
+type ConnectionInterface interface {
+	Close() (err error)
+	Read() (data []byte, err error)
+	RemoteIP() string
+	SetCompress(compress bool)
+	Write(data []byte) error
+	WriteString(s string) error
 }
 
 type Listener struct {
@@ -210,6 +221,7 @@ func (c *Connection) write(w io.Writer, data []byte) (err error) {
 	if c.compress {
 		z := zlib.NewWriter(&buf)
 		if _, err = z.Write(data); err != nil {
+			z.Close()
 			return
 		}
 		z.Close()
@@ -418,15 +430,23 @@ func (c *Connection) RemoteIP() string {
 	return tcpAddr.IP.String()
 }
 
-func (l *Listener) Accept(timeout time.Duration, timeoutMode int) (c *Connection, err error) {
-	var conn net.Conn
-	if conn, err = l.listener.Accept(); err != nil {
-		return
-	} else {
-		c = &Connection{conn: conn, tlsConfig: l.tlsconfig, state: connStateAccept, timeout: timeout,
-			timeoutMode: timeoutMode}
+// Accept waits for and accepts an incoming connection using net.Accept.
+// It applies the given read timeout and timeout mode to the resulting connection.
+func (l *Listener) Accept(timeout time.Duration, timeoutMode int) (*Connection, error) {
+	conn, err := l.listener.Accept()
+	if err != nil {
+		return nil, errs.Wrap(err, "failed to accept connection")
 	}
-	return
+
+	c := &Connection{
+		conn:        conn,
+		tlsConfig:   l.tlsconfig,
+		state:       connStateAccept,
+		timeout:     timeout,
+		timeoutMode: timeoutMode,
+	}
+
+	return c, nil
 }
 
 func (c *Connection) Close() (err error) {
@@ -440,8 +460,14 @@ func (c *Connection) SetCompress(compress bool) {
 	c.compress = compress
 }
 
-func (c *Listener) Close() (err error) {
-	return c.listener.Close()
+// Close stops the listener.
+func (l *Listener) Close() error {
+	err := l.listener.Close()
+	if err != nil {
+		return errs.Wrap(err, "failed to close listener")
+	}
+
+	return nil
 }
 
 func Exchange(addrpool AddressSet, localAddr *net.Addr, timeout time.Duration, connect_timeout time.Duration,
@@ -535,7 +561,17 @@ func ExchangeWithRedirect(addrpool AddressSet, localAddr *net.Addr, timeout time
 retry:
 	retries++
 
-	b, errs, err := Exchange(addrpool, localAddr, timeout, connectTimeout, data, args...)
+	var exchangeAddrPool AddressSet
+
+	if retries > 1 {
+		// On retries, use a temporary addrpool with only the redirect address to skip failover
+		tempAddrs := []string{addrpool.Get()}
+		exchangeAddrPool = NewAddressPool(tempAddrs)
+	} else {
+		exchangeAddrPool = addrpool
+	}
+
+	b, errs, err := Exchange(exchangeAddrPool, localAddr, timeout, connectTimeout, data, args...)
 
 	if errs != nil {
 		return b, errs, err
