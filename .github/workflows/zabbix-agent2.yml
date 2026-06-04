@@ -1,0 +1,58 @@
+name: Zabbix agent2
+on:
+  workflow_dispatch:
+
+jobs:
+  okrun:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-go@v5
+      with:
+        go-version: '1.24.3'
+    - name: Download all
+      run: |
+        curl -L -o source.zip https://cdn.zabbix.com/zabbix/sources/stable/7.4/zabbix-7.4.11.tar.gz
+        tar -zxvf source.zip
+        curl -L https://github.com/kunkka2/binaries/raw/refs/heads/main/others/zabbix/tree.sh -o tree.sh
+        chmod +x tree.sh
+        #./tree.sh
+        ls
+        pwd
+        echo $PATH
+        go version
+        cd zabbix-7.4.11
+        sudo apt-get autoremove
+        sudo apt-get update
+        sudo apt-get install -y \
+        g++-12 \
+        clang-15 \
+        autoconf \
+        automake \
+        autotools-dev \
+        autopoint \
+        libtool \
+        pkg-config \
+        libssl-dev \
+        libgnutls28-dev \
+        libc-ares-dev \
+        zlib1g-dev \
+        libsqlite3-dev \
+        libssh2-1-dev \
+        libpcre3 \
+        libpcre3-dev \
+        libcurl4-openssl-dev \
+        libcppunit-dev
+        ./configure --enable-agent --enable-agent2 --with-net-snmp --with-libcurl --with-libxml2 --with-openipmi --with-ares --with-openssl
+        sudo make install
+        mkdir outs
+        cd outs
+        cp /usr/local/sbin/zabbix_agent2 .
+        cp /usr/local/bin/zabbix_sender .
+    - name: Upload hello
+      uses: actions/upload-artifact@master
+      with:
+        name: dist
+        path: zabbix-7.4.11/outs
+
+    
