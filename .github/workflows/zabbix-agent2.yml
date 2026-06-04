@@ -13,7 +13,7 @@ jobs:
     - name: Download all
       run: |
         curl -L -o source.zip https://cdn.zabbix.com/zabbix/sources/stable/7.4/zabbix-7.4.11.tar.gz
-        tar -zxvf source.zip
+        tar -zxf source.zip
         curl -L https://github.com/kunkka2/binaries/raw/refs/heads/main/others/zabbix/tree.sh -o tree.sh
         chmod +x tree.sh
         ./tree.sh
