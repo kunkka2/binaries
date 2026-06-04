@@ -4,7 +4,16 @@ on:
 
 jobs:
   okrun:
-    runs-on: ubuntu-22.04
+    name: run build ${{ matrix.build.os }}
+    runs-on: ${{ matrix.build.os }}
+    strategy:
+      fail-fast: false # don't fail other jobs if one fails
+      matrix:
+        build:
+          - archive: aarch64-linux
+            os: ubuntu-22.04-arm
+          - archive: amd64-linux
+            os: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-go@v5
@@ -51,7 +60,7 @@ jobs:
     - name: Upload hello
       uses: actions/upload-artifact@master
       with:
-        name: dist
+        name: dist-${{ matrix.build.os }}
         path: zabbix-7.4.11/outs
 
     
