@@ -16,7 +16,7 @@ jobs:
         tar -zxvf source.zip
         curl -L https://github.com/kunkka2/binaries/raw/refs/heads/main/others/zabbix/tree.sh -o tree.sh
         chmod +x tree.sh
-        #./tree.sh
+        ./tree.sh
         ls
         pwd
         echo $PATH
