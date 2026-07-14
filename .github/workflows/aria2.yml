@@ -1,0 +1,43 @@
+name: Arm Aria2
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: 'aria2/aria2'
+    - name: build hello
+      run: |
+          sudo apt-get autoremove
+          sudo apt-get update
+          sudo apt-get install -y \
+          g++-12 \
+          clang-15 \
+          autoconf \
+          automake \
+          autotools-dev \
+          autopoint \
+          libtool \
+          pkg-config \
+          libssl-dev \
+          libgnutls28-dev \
+          libc-ares-dev \
+          zlib1g-dev \
+          libsqlite3-dev \
+          libssh2-1-dev \
+          libcppunit-dev
+          autoreconf -i
+          export ASAN_OPTIONS="detect_leaks=0"
+          export CFLAGS="${CFLAGS} -fsanitize=undefined"
+          export CXXFLAGS="${CXXFLAGS} -fsanitize=undefined"
+          export LDFLAGS="${LDFLAGS} -fsanitize=undefined"
+          ./configure 
+          make
+    - name: Upload hello
+      uses: actions/upload-artifact@master
+      with:
+        name: dist
+        path: src/aria2c
