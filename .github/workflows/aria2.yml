@@ -1,4 +1,4 @@
-name: Arm Aria2
+name: Build Aria2
 on:
   workflow_dispatch:
 
