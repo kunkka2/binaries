@@ -1,0 +1,67 @@
+name: Build Socat for Windows
+on:
+  workflow_dispatch: # 支持手动点击按钮触发构建
+
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 1. 配置 MSYS2 环境
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            base-devel
+            gcc
+            make
+            autoconf
+            automake
+            tar
+            curl
+            openssl-devel
+
+      # 2. 下载并编译 socat
+      - name: Download and Build Socat
+        shell: msys2 {0}
+        run: |
+          # 定义要构建的 socat 版本
+          SOCAT_VERSION="1.8.0.0"
+          
+          echo "=== 下载 Socat 源码 ==="
+          curl -LO http://www.dest-unreach.org/socat/download/socat-${SOCAT_VERSION}.tar.gz
+          tar -xzf socat-${SOCAT_VERSION}.tar.gz
+          cd socat-${SOCAT_VERSION}
+
+          echo "=== 配置与编译 ==="
+          ./configure
+          make
+
+          echo "=== 整理产物 ==="
+          mkdir -p ../dist
+          cp socat.exe ../dist/
+          
+          # 拷贝所需的 DLL 依赖文件（保证独立运行）
+          cp /usr/bin/msys-2.0.dll ../dist/ 2>/dev/null || true
+          cp /mingw64/bin/libssl*.dll ../dist/ 2>/dev/null || true
+          cp /mingw64/bin/libcrypto*.dll ../dist/ 2>/dev/null || true
+          cp /mingw64/bin/libgcc_s_*.dll ../dist/ 2>/dev/null || true
+
+      # 3. 打包压缩
+      - name: Archive production artifacts
+        shell: powershell
+        run: |
+          Compress-Archive -Path dist\* -DestinationPath socat-windows-x64.zip
+
+      # 4. 上传 Artifact (每次构建均可直接下载)
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: socat-windows-x64
+          path: socat-windows-x64.zip
