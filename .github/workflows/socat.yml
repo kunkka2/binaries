@@ -40,6 +40,8 @@ jobs:
           ls -l
           #tar -xzf socat-${SOCAT_VERSION}.tar.gz
           7z x socat-${SOCAT_VERSION}.tar.gz
+          echo "7z x tar.gz ed"
+          ls -l
           cd  socat-${SOCAT_VERSION}.tar
           7z x socat-${SOCAT_VERSION}.tar
           mv socat-${SOCAT_VERSION} ../
