@@ -31,7 +31,7 @@ jobs:
       - name: Download and Build Socat
         shell: msys2 {0}
         run: |
-          pacman -S mingw-w64-x86_64-p7zip
+          pacman -S p7zip || pacman -S mingw-w64-x86_64-p7zip || pacman -S mingw-w64-x86_64-7zip
           # 定义要构建的 socat 版本
           SOCAT_VERSION="1.8.1.3"
           
