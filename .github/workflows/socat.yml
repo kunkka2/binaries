@@ -39,7 +39,7 @@ jobs:
           curl -LO http://www.dest-unreach.org/socat/download/socat-${SOCAT_VERSION}.tar.gz
           ls -l
           #tar -xzf socat-${SOCAT_VERSION}.tar.gz
-          7z -x socat-${SOCAT_VERSION}.tar.gz
+          7z x socat-${SOCAT_VERSION}.tar.gz
           cd  socat-${SOCAT_VERSION}.tar
           7z x socat-${SOCAT_VERSION}.tar
           mv socat-${SOCAT_VERSION} ../
