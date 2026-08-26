@@ -36,7 +36,10 @@ jobs:
           
           echo "=== 下载 Socat 源码 ==="
           curl -LO http://www.dest-unreach.org/socat/download/socat-${SOCAT_VERSION}.tar.gz
+          ls -l
           tar -xzf socat-${SOCAT_VERSION}.tar.gz
+          echo "tar down ls again"
+          ls -l
           cd socat-${SOCAT_VERSION}
 
           echo "=== 配置与编译 ==="
