@@ -32,7 +32,7 @@ jobs:
         shell: msys2 {0}
         run: |
           # 定义要构建的 socat 版本
-          SOCAT_VERSION="1.8.0.0"
+          SOCAT_VERSION="1.8.1.3"
           
           echo "=== 下载 Socat 源码 ==="
           curl -LO http://www.dest-unreach.org/socat/download/socat-${SOCAT_VERSION}.tar.gz
