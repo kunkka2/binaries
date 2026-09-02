@@ -1,0 +1,59 @@
+name: Build WezTerm Windows
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "wezterm 的分支/tag/commit（默认 main 最新）"
+        required: false
+        default: "main"
+
+jobs:
+  build:
+    runs-on: windows-2022
+    env:
+      CARGO_INCREMENTAL: "0"
+    steps:
+      - name: Checkout wezterm source
+        uses: actions/checkout@v4
+        with:
+          repository: wezterm/wezterm
+          ref: ${{ github.event.inputs.ref }}
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Install Rust (MSVC)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          target: x86_64-pc-windows-msvc
+
+      - name: Make sure Strawberry Perl comes first in PATH
+        run: echo "C:\Strawberry\perl\bin" | Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build release
+        run: cargo build --release
+
+      - name: Package portable zip
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path dist -Force
+          Copy-Item target\release\*.exe dist\
+          Copy-Item target\release\*.dll dist\ -ErrorAction SilentlyContinue
+          Copy-Item -Recurse assets\windows\* dist\ -ErrorAction SilentlyContinue
+          Compress-Archive -Path dist\* -DestinationPath wezterm-windows.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wezterm-windows
+          path: wezterm-windows.zip
+          retention-days: 14
