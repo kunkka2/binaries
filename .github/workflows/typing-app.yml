@@ -9,10 +9,10 @@ jobs:
     env:
       CARGO_INCREMENTAL: "0"
     steps:
-      - name: Checkout tukai source
+      - name: Checkout octotype source
         uses: actions/checkout@v4
         with:
-          repository: hlsxx/tukai
+          repository: mahlquistj/octotype
           ref: master
           submodules: recursive
           fetch-depth: 1
@@ -41,11 +41,10 @@ jobs:
           Copy-Item target\release\*.exe dist\
           Copy-Item target\release\*.dll dist\ -ErrorAction SilentlyContinue
           Copy-Item -Recurse assets\windows\* dist\ -ErrorAction SilentlyContinue
-          Compress-Archive -Path dist\* -DestinationPath tukai-windows.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tukai-windows
-          path: tukai-windows.zip
+          name: octotype-windows
+          path: dist
           retention-days: 14
