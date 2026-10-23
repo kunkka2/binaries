@@ -24,7 +24,7 @@ jobs:
           - archive: x86_64-windows
             os: windows-latest
             target: x86_64-pc-windows-msvc
-            features: rusty-soundtouch,mpv
+            features: mpv,rusty-soundtouch
     steps:
       - name: Checkout sources
         uses: actions/checkout@v6
