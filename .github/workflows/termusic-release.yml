@@ -45,8 +45,8 @@ jobs:
         run: |
             choco install protoc
             New-Item -ItemType Directory -Force -Path libmpv | Out-Null
-            Invoke-WebRequest -Uri "https://github.com/peschuster/libmpv-build/releases/download/build-20261004-3/libmpv-e470f8986e-windows-x64.zip" -OutFile mpv-dev.7z
-            7z x mpv-dev.7z -olibmpv
+            Invoke-WebRequest -Uri "https://github.com/peschuster/libmpv-build/releases/download/build-20261004-3/libmpv-e470f8986e-windows-x64.zip" -OutFile libmpv.zip
+            7z x libmpv.zip -olibmpv
             dir
       - name: Set rustflags
         shell: pwsh
