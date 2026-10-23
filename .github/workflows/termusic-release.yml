@@ -1,34 +1,35 @@
-name: Termusic release
+name: Termusic Release
 on:
-  workflow_dispatch:
+  workflow_dispatch: # allow manually running the workflow on a given branch to check that it works before running a release
 
 permissions:
   contents: read
 
 env:
   BIN_NAME: termusic
-  BIN_NAME_SERVER: termusic-server 
-  PROJECT_NAME: termusic 
+  BIN_NAME_SERVER: termusic-server
+  PROJECT_NAME: termusic
 
 jobs:
   dist:
     name: Dist
     runs-on: ${{ matrix.build.os }}
+    timeout-minutes: 20
     strategy:
       fail-fast: false # don't fail other jobs if one fails
       matrix:
         rust: [stable]
         build:
-          - archive: aarch64-linux
-            os: ubuntu-22.04-arm
-            target: aarch64-unknown-linux-gnu # aarch64-unknown-linux-musl
-            features: cover,all-backends,rusty-soundtouch
-        
-
+          # windows x86
+          - archive: x86_64-windows
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            features: rusty-soundtouch,mpv
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
         with:
+          persist-credentials: false
           repository: 'tramhao/termusic'
           submodules: true
 
@@ -38,25 +39,29 @@ jobs:
           toolchain: ${{ matrix.rust }}
           targets: ${{ matrix.build.target }}
 
-      - name: Install developer package dependencies
-        run: sudo apt-get update && sudo apt-get install libasound2-dev libdbus-1-dev pkg-config protobuf-compiler libgstreamer1.0-0 libunwind-dev libgstreamer1.0-dev libmpv-dev
+      
+      - name: Install developer package dependencies (Windows)
+        if: runner.os == 'windows'
+        run: |
+            choco install protoc
+            New-Item -ItemType Directory -Force -Path libmpv | Out-Null
+            Invoke-WebRequest -Uri "https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20261021/mpv-dev-x86_64-20261021-git-e471496c56.7z" -OutFile mpv-dev.7z
+            7z x mpv-dev.7z -olibmpv
+
+      - name: Run cargo test
+        run: cargo test --release --workspace --features ${{ matrix.build.features }} --target ${{ matrix.build.target }}
 
       - name: Build release binary
-        run: |
-          rustup target add aarch64-unknown-linux-musl
-          export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER=aarch64-linux-gnu-gcc
-          export CC=aarch64-linux-gnu-gcc
-          cargo build --release --workspace --features ${{ matrix.build.features }} --target ${{ matrix.build.target }}
+        run: cargo build --release --workspace --features ${{ matrix.build.features }} --target ${{ matrix.build.target }}
 
-
-      - name: Build archive
-        shell: bash
+      - name: Build archive (Windows)
+        if: runner.os == 'windows'
         run: |
           mkdir dist
-          cp "target/${{ matrix.build.target }}/release/$BIN_NAME" "dist/"
-          cp "target/${{ matrix.build.target }}/release/$BIN_NAME_SERVER" "dist/"
+          cp "target/${{ matrix.build.target }}/release/${{ env.BIN_NAME }}.exe" "dist/"
+          cp "target/${{ matrix.build.target }}/release/${{ env.BIN_NAME_SERVER }}.exe" "dist/"
 
       - uses: actions/upload-artifact@v7
         with:
-          name: bins-${{ matrix.build.target }}
+          name: bins-${{ matrix.build.archive }}
           path: dist
