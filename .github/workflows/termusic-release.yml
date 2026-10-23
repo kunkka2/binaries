@@ -24,13 +24,14 @@ jobs:
           - archive: x86_64-windows
             os: windows-latest
             target: x86_64-pc-windows-msvc
-            features: mpv,rusty-soundtouch
+            features: mpv
     steps:
       - name: Checkout sources
         uses: actions/checkout@v6
         with:
           persist-credentials: false
           repository: 'tramhao/termusic'
+          ref: '8bbb47b928588893c8aed14ef710c13aadd3fb10'
           submodules: true
 
       - name: Install ${{ matrix.rust }} toolchain
