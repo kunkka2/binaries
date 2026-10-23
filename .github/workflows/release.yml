@@ -1,0 +1,63 @@
+name: Termusic Release
+on:
+  workflow_dispatch: # allow manually running the workflow on a given branch to check that it works before running a release
+
+permissions:
+  contents: read
+
+env:
+  BIN_NAME: termusic
+  BIN_NAME_SERVER: termusic-server
+  PROJECT_NAME: termusic
+
+jobs:
+  dist:
+    name: Dist
+    runs-on: ${{ matrix.build.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false # don't fail other jobs if one fails
+      matrix:
+        rust: [stable]
+        build:
+          # windows x86
+          - archive: x86_64-windows
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            features: all-backends
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          repository: 'tramhao/termusic'
+          submodules: true
+
+      - name: Install ${{ matrix.rust }} toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ matrix.rust }}
+          targets: ${{ matrix.build.target }}
+
+      
+      - name: Install developer package dependencies (Windows)
+        if: runner.os == 'windows'
+        run: choco install protoc
+
+      - name: Run cargo test
+        run: cargo test --release --workspace --features ${{ matrix.build.features }} --target ${{ matrix.build.target }}
+
+      - name: Build release binary
+        run: cargo build --release --workspace --features ${{ matrix.build.features }} --target ${{ matrix.build.target }}
+
+      - name: Build archive (Windows)
+        if: runner.os == 'windows'
+        run: |
+          mkdir dist
+          cp "target/${{ matrix.build.target }}/release/${{ env.BIN_NAME }}.exe" "dist/"
+          cp "target/${{ matrix.build.target }}/release/${{ env.BIN_NAME_SERVER }}.exe" "dist/"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: bins-${{ matrix.build.archive }}
+          path: dist
