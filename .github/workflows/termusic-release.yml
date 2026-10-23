@@ -47,7 +47,10 @@ jobs:
             New-Item -ItemType Directory -Force -Path libmpv | Out-Null
             Invoke-WebRequest -Uri "https://github.com/peschuster/libmpv-build/releases/download/build-20261004-3/libmpv-e470f8986e-windows-x64.zip" -OutFile mpv-dev.7z
             7z x mpv-dev.7z -olibmpv
-
+            dir
+      - name: Set rustflags
+        shell: pwsh
+        run: echo "RUSTFLAGS=-L $PWD\libmpv" >> $env:GITHUB_ENV
       - name: Run cargo test
         run: cargo test --release --workspace --features ${{ matrix.build.features }} --target ${{ matrix.build.target }}
 
