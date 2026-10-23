@@ -45,7 +45,7 @@ jobs:
         run: |
             choco install protoc
             New-Item -ItemType Directory -Force -Path libmpv | Out-Null
-            Invoke-WebRequest -Uri "https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20261021/mpv-dev-x86_64-20261021-git-e471496c56.7z" -OutFile mpv-dev.7z
+            Invoke-WebRequest -Uri "https://github.com/peschuster/libmpv-build/releases/download/build-20261004-3/libmpv-e470f8986e-windows-x64.zip" -OutFile mpv-dev.7z
             7z x mpv-dev.7z -olibmpv
 
       - name: Run cargo test
