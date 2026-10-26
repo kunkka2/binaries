@@ -24,7 +24,7 @@ jobs:
           - archive: x86_64-windows
             os: windows-latest
             target: x86_64-pc-windows-msvc
-            features: mpv
+            features: gst
     steps:
       - name: Checkout sources
         uses: actions/checkout@v6
@@ -42,7 +42,7 @@ jobs:
 
       
       - name: Install developer package dependencies (Windows)
-        if: runner.os == 'windows'
+        if: runner.os == 'windows-nouse'
         run: |
             choco install protoc
             New-Item -ItemType Directory -Force -Path libmpv | Out-Null
@@ -50,6 +50,7 @@ jobs:
             7z x libmpv.zip -olibmpv
             dir
       - name: Set rustflags
+        if: runner.os == 'windows-nouse'
         shell: pwsh
         run: echo "RUSTFLAGS=-L $PWD\libmpv" >> $env:GITHUB_ENV
       - name: Run cargo test
